@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cuerpo Sonoro - Demo Web</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Cuerpo Sonoro - Web Demo</h1>
+            <p class="subtitle">Transform your movement into sound</p>
+        </header>
+
+        <main>
+            <div class="video-container">
+                <video id="video" autoplay playsinline></video>
+                <canvas id="canvas"></canvas>
+                <div id="status" class="status">Cargando...</div>
+            </div>
+
+            <div class="controls">
+                <button id="startBtn" class="btn btn-primary" disabled>
+                    Iniciar
+                </button>
+                <button id="stopBtn" class="btn btn-secondary" disabled>
+                    Detener
+                </button>
+            </div>
+
+            <div class="features-display">
+                <h3>Features</h3>
+                <div class="feature-grid">
+                    <div class="feature">
+                        <span class="label">Energía</span>
+                        <div class="bar-container">
+                            <div id="bar-energy" class="bar"></div>
+                        </div>
+                        <span id="val-energy" class="value">0.00</span>
+                    </div>
+                    <div class="feature">
+                        <span class="label">Simetría</span>
+                        <div class="bar-container symmetry">
+                            <div id="bar-symmetry" class="bar"></div>
+                        </div>
+                        <span id="val-symmetry" class="value">0.00</span>
+                    </div>
+                    <div class="feature">
+                        <span class="label">Fluidez</span>
+                        <div class="bar-container">
+                            <div id="bar-smoothness" class="bar"></div>
+                        </div>
+                        <span id="val-smoothness" class="value">0.00</span>
+                    </div>
+                    <div class="feature">
+                        <span class="label">Brazos</span>
+                        <div class="bar-container">
+                            <div id="bar-armAngle" class="bar"></div>
+                        </div>
+                        <span id="val-armAngle" class="value">0.00</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="connection-status">
+                <span id="wsStatus" class="ws-indicator disconnected"></span>
+                <span id="wsText">Desconectado</span>
+            </div>
+        </main>
+
+        <footer>
+            <p>TFG - Ana María Jurado Crespo - URJC 2025/2026</p>
+        </footer>
+    </div>
+
+    <!-- MediaPipe -->
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose/pose.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
+
+    <!-- App modules -->
+    <script src="js/camera.js"></script>
+    <script src="js/pose.js"></script>
+    <script src="js/websocket.js"></script>
+    <script src="js/audio.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
