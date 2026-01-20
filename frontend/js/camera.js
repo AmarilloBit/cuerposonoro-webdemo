@@ -1,0 +1,61 @@
+/**
+ * Camera handler for webcam access
+ */
+
+class CameraHandler {
+    constructor(videoElement) {
+        this.video = videoElement;
+        this.stream = null;
+    }
+
+    async init() {
+        // Check for camera support
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+            throw new Error('Tu navegador no soporta acceso a la cámara');
+        }
+    }
+
+    async start() {
+        try {
+            this.stream = await navigator.mediaDevices.getUserMedia({
+                video: {
+                    width: { ideal: 640 },
+                    height: { ideal: 480 },
+                    facingMode: 'user',
+                    frameRate: { ideal: 30 }
+                },
+                audio: false
+            });
+
+            this.video.srcObject = this.stream;
+
+            // Wait for video to be ready
+            await new Promise((resolve) => {
+                this.video.onloadedmetadata = () => {
+                    this.video.play();
+                    resolve();
+                };
+            });
+
+        } catch (error) {
+            if (error.name === 'NotAllowedError') {
+                throw new Error('Permiso de cámara denegado');
+            } else if (error.name === 'NotFoundError') {
+                throw new Error('No se encontró ninguna cámara');
+            }
+            throw error;
+        }
+    }
+
+    stop() {
+        if (this.stream) {
+            this.stream.getTracks().forEach(track => track.stop());
+            this.stream = null;
+        }
+        this.video.srcObject = null;
+    }
+
+    getVideoElement() {
+        return this.video;
+    }
+}
