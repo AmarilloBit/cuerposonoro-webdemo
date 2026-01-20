@@ -1,19 +1,19 @@
 """
 Feature extraction from pose landmarks.
 This is a simplified version for the web demo.
-Copy/adapt your main project's features.py here.
 """
 
 import math
 from typing import Optional
+from config import FEATURES_CONFIG
 
 
 class FeatureExtractor:
     """Extracts musical features from MediaPipe pose landmarks."""
 
     def __init__(self):
+        self.config = FEATURES_CONFIG
         self.prev_landmarks = None
-        self.smoothing_factor = 0.3  # For temporal smoothing
         self.prev_features = None
 
     def calculate(self, landmarks: list, prev_landmarks: Optional[list] = None) -> dict:
@@ -44,15 +44,12 @@ class FeatureExtractor:
         return features
 
     def _calculate_energy(self, landmarks: list, prev_landmarks: Optional[list]) -> float:
-        """
-        Overall motion energy based on velocity of key points: wrists, ankles, nose...
-        More movent = more energy
-        """
+        """Overall motion energy based on velocity of key points."""
         if prev_landmarks is None:
             return 0.0
 
-        # Key points: wrists, ankles, nose
-        key_indices = [0, 15, 16, 27, 28]  # nose, wrists, ankles
+        key_indices = self.config["energy_key_points"]
+        multiplier = self.config["energy_multiplier"]
 
         total_velocity = 0.0
         for idx in key_indices:
@@ -62,8 +59,7 @@ class FeatureExtractor:
                 velocity = math.sqrt(dx ** 2 + dy ** 2)
                 total_velocity += velocity
 
-        # Normalize (empirical values, adjust as needed)
-        energy = min(total_velocity * 10, 1.0)
+        energy = min(total_velocity * multiplier, 1.0)
         return energy
 
     def _calculate_symmetry(self, landmarks: list) -> float:
@@ -71,24 +67,21 @@ class FeatureExtractor:
         Left-right symmetry index.
         Returns: -1.0 (left heavy) to 1.0 (right heavy), 0.0 = balanced
         """
-        # Compare left vs right wrist positions
-        left_wrist = landmarks[15]  # left wrist
-        right_wrist = landmarks[16]  # right wrist
+        multiplier = self.config["symmetry_multiplier"]
 
-        # Calculate horizontal center of mass for arms
+        left_wrist = landmarks[15]
+        right_wrist = landmarks[16]
+
         left_x = left_wrist["x"]
         right_x = right_wrist["x"]
 
-        # Center is at 0.5, calculate deviation
         center = 0.5
         left_dev = center - left_x
         right_dev = right_x - center
 
-        # Positive = right side more extended, negative = left side
         symmetry = right_dev - left_dev
 
-        # Clamp to -1, 1
-        return max(-1.0, min(1.0, symmetry * 2))
+        return max(-1.0, min(1.0, symmetry * multiplier))
 
     def _calculate_smoothness(self, landmarks: list, prev_landmarks: Optional[list]) -> float:
         """
@@ -99,35 +92,31 @@ class FeatureExtractor:
         if prev_landmarks is None:
             return 0.5
 
-        # Calculate acceleration changes (simplified jerk estimation)
-        # Using wrists as primary indicators
-        wrist_indices = [15, 16]
+        key_indices = self.config["smoothness_key_points"]
+        multiplier = self.config["smoothness_multiplier"]
 
         total_jerk = 0.0
-        for idx in wrist_indices:
+        for idx in key_indices:
             dx = landmarks[idx]["x"] - prev_landmarks[idx]["x"]
             dy = landmarks[idx]["y"] - prev_landmarks[idx]["y"]
             movement = math.sqrt(dx ** 2 + dy ** 2)
             total_jerk += movement
 
-        # Invert and normalize (high jerk = low smoothness)
-        smoothness = 1.0 - min(total_jerk * 5, 1.0)
+        smoothness = 1.0 - min(total_jerk * multiplier, 1.0)
         return max(0.0, smoothness)
 
     def _calculate_arm_angle(self, landmarks: list) -> float:
-        """
-        Average arm elevation angle (0 = down, 1 = horizontal or above).
-        """
-        # Shoulders and wrists
+        """Average arm elevation angle (0 = down, 1 = horizontal or above)."""
+        offset = self.config["arm_angle_offset"]
+
         left_shoulder = landmarks[11]
         right_shoulder = landmarks[12]
         left_wrist = landmarks[15]
         right_wrist = landmarks[16]
 
         def arm_elevation(shoulder, wrist):
-            # Vertical difference (negative y = higher in screen coords)
-            dy = shoulder["y"] - wrist["y"]  # positive = arm raised
-            return max(0.0, min(1.0, dy + 0.5))  # normalize
+            dy = shoulder["y"] - wrist["y"]
+            return max(0.0, min(1.0, dy + offset))
 
         left_angle = arm_elevation(left_shoulder, left_wrist)
         right_angle = arm_elevation(right_shoulder, right_wrist)
@@ -135,24 +124,23 @@ class FeatureExtractor:
         return (left_angle + right_angle) / 2
 
     def _calculate_vertical_extension(self, landmarks: list) -> float:
-        """
-        How vertically extended the body is (crouching vs stretching).
-        """
+        """How vertically extended the body is (crouching vs stretching)."""
+        multiplier = self.config["vertical_extension_multiplier"]
+
         nose = landmarks[0]
         left_ankle = landmarks[27]
         right_ankle = landmarks[28]
 
         ankle_y = (left_ankle["y"] + right_ankle["y"]) / 2
+        height = ankle_y - nose["y"]
 
-        # Height from ankles to nose
-        height = ankle_y - nose["y"]  # positive = standing tall
-
-        # Normalize (empirical, adjust based on testing)
-        extension = max(0.0, min(1.0, height * 1.5))
+        extension = max(0.0, min(1.0, height * multiplier))
         return extension
 
     def _smooth_features(self, features: dict) -> dict:
         """Apply exponential smoothing to reduce jitter."""
+        smoothing = self.config["smoothing_factor"]
+
         if self.prev_features is None:
             self.prev_features = features.copy()
             return features
@@ -160,8 +148,7 @@ class FeatureExtractor:
         smoothed = {}
         for key, value in features.items():
             prev_value = self.prev_features.get(key, value)
-            smoothed[key] = (self.smoothing_factor * value +
-                             (1 - self.smoothing_factor) * prev_value)
+            smoothed[key] = smoothing * value + (1 - smoothing) * prev_value
 
         self.prev_features = smoothed.copy()
         return smoothed
