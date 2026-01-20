@@ -4,32 +4,33 @@
 
 class CameraHandler {
     constructor(videoElement) {
+        this.config = CONFIG.camera;
         this.video = videoElement;
         this.stream = null;
     }
 
     async init() {
-        // Check for camera support
         if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
             throw new Error('Tu navegador no soporta acceso a la cámara');
         }
     }
 
     async start() {
+        const cfg = this.config;
+
         try {
             this.stream = await navigator.mediaDevices.getUserMedia({
                 video: {
-                    width: { ideal: 640 },
-                    height: { ideal: 480 },
-                    facingMode: 'user',
-                    frameRate: { ideal: 30 }
+                    width: { ideal: cfg.width },
+                    height: { ideal: cfg.height },
+                    facingMode: cfg.facingMode,
+                    frameRate: { ideal: cfg.frameRate }
                 },
                 audio: false
             });
 
             this.video.srcObject = this.stream;
 
-            // Wait for video to be ready
             await new Promise((resolve) => {
                 this.video.onloadedmetadata = () => {
                     this.video.play();
