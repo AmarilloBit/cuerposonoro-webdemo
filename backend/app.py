@@ -2,6 +2,7 @@
 Cuerpo Sonoro Web - Backend Server
 FastAPI application with WebSocket for real-time pose feature extraction
 """
+
 import os
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.staticfiles import StaticFiles
@@ -13,7 +14,7 @@ from features import FeatureExtractor
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-app = FastAPI(title="Cuerpo Sonoro Web") # var that uvicorn searches for
+app = FastAPI(title="Cuerpo Sonoro Web")
 extractor = FeatureExtractor()
 
 
@@ -31,15 +32,12 @@ async def websocket_endpoint(websocket: WebSocket):
 
     try:
         while True:
-            # Receive landmarks from browser
             data = await websocket.receive_text()
             landmarks = json.loads(data)
 
-            # Calculate features using existing code
             features = extractor.calculate(landmarks, prev_landmarks)
             prev_landmarks = landmarks
 
-            # Send features back
             await websocket.send_text(json.dumps(features))
 
     except WebSocketDisconnect:
@@ -54,9 +52,13 @@ async def health_check():
     return {"status": "ok"}
 
 
-# Serve frontend static files
-# In production, Nginx handles this, but useful for local development
+# Serve frontend static files (only for local development)
+# In Docker, Nginx serves the frontend
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 FRONTEND_DIR = os.path.join(BASE_DIR, "frontend")
 
-app.mount("/", StaticFiles(directory=FRONTEND_DIR, html=True), name="frontend")
+if os.path.exists(FRONTEND_DIR):
+    app.mount("/", StaticFiles(directory=FRONTEND_DIR, html=True), name="frontend")
+    logger.info(f"Serving frontend from {FRONTEND_DIR}")
+else:
+    logger.info("Frontend directory not found - running in API-only mode (Docker)")
