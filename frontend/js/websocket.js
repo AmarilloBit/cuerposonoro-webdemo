@@ -4,13 +4,12 @@
 
 class WebSocketClient {
     constructor(url, onFeatures) {
+        this.config = CONFIG.websocket;
         this.url = url;
         this.onFeatures = onFeatures;
         this.onStatusChange = null;
         this.ws = null;
         this.reconnectAttempts = 0;
-        this.maxReconnectAttempts = 5;
-        this.reconnectDelay = 1000;
     }
 
     connect() {
@@ -57,13 +56,15 @@ class WebSocketClient {
     }
 
     attemptReconnect() {
-        if (this.reconnectAttempts >= this.maxReconnectAttempts) {
+        const cfg = this.config;
+
+        if (this.reconnectAttempts >= cfg.maxReconnectAttempts) {
             console.log('Max reconnect attempts reached');
             return;
         }
 
         this.reconnectAttempts++;
-        const delay = this.reconnectDelay * this.reconnectAttempts;
+        const delay = cfg.reconnectDelay * this.reconnectAttempts;
 
         console.log(`Reconnecting in ${delay}ms (attempt ${this.reconnectAttempts})`);
 
@@ -79,7 +80,7 @@ class WebSocketClient {
     }
 
     disconnect() {
-        this.reconnectAttempts = this.maxReconnectAttempts; // Prevent auto-reconnect
+        this.reconnectAttempts = this.config.maxReconnectAttempts;
         if (this.ws) {
             this.ws.close();
             this.ws = null;

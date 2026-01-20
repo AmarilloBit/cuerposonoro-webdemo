@@ -1,30 +1,28 @@
 /**
  * Audio synthesis engine using Web Audio API
- * Simple but expressive sound design for the web demo
  */
 
 class AudioEngine {
     constructor() {
+        this.config = CONFIG.audio;
         this.ctx = null;
         this.isRunning = false;
 
         // Audio nodes
-        this.osc1 = null;      // Main oscillator
-        this.osc2 = null;      // Detuned oscillator for richness
-        this.filter = null;    // Low-pass filter
-        this.panner = null;    // Stereo panning
-        this.gainNode = null;  // Master volume
-        this.lfo = null;       // LFO for vibrato/tremolo
-        this.lfoGain = null;   // LFO depth
+        this.osc1 = null;
+        this.osc2 = null;
+        this.filter = null;
+        this.panner = null;
+        this.gainNode = null;
+        this.lfo = null;
+        this.lfoGain = null;
     }
 
     async start() {
         if (this.isRunning) return;
 
-        // Create audio context (must be after user interaction)
         this.ctx = new (window.AudioContext || window.webkitAudioContext)();
 
-        // Resume if suspended
         if (this.ctx.state === 'suspended') {
             await this.ctx.resume();
         }
@@ -35,22 +33,23 @@ class AudioEngine {
 
     setupNodes() {
         const ctx = this.ctx;
+        const cfg = this.config;
 
-        // Main oscillator (sawtooth for harmonics)
+        // Main oscillator
         this.osc1 = ctx.createOscillator();
-        this.osc1.type = 'sawtooth';
-        this.osc1.frequency.value = 220;
+        this.osc1.type = cfg.oscillatorType;
+        this.osc1.frequency.value = cfg.baseFrequency;
 
         // Second oscillator (slightly detuned)
         this.osc2 = ctx.createOscillator();
-        this.osc2.type = 'sawtooth';
-        this.osc2.frequency.value = 220 * 1.005; // Slight detune
+        this.osc2.type = cfg.oscillatorType;
+        this.osc2.frequency.value = cfg.baseFrequency * cfg.detuneRatio;
 
         // Oscillator gains
         this.osc1Gain = ctx.createGain();
-        this.osc1Gain.gain.value = 0.3;
+        this.osc1Gain.gain.value = cfg.osc1Gain;
         this.osc2Gain = ctx.createGain();
-        this.osc2Gain.gain.value = 0.2;
+        this.osc2Gain.gain.value = cfg.osc2Gain;
 
         // Mix oscillators
         this.oscMix = ctx.createGain();
@@ -58,8 +57,8 @@ class AudioEngine {
         // Filter
         this.filter = ctx.createBiquadFilter();
         this.filter.type = 'lowpass';
-        this.filter.frequency.value = 800;
-        this.filter.Q.value = 2;
+        this.filter.frequency.value = cfg.filterCutoffMin;
+        this.filter.Q.value = cfg.filterQBase;
 
         // Panner
         this.panner = ctx.createStereoPanner();
@@ -69,12 +68,12 @@ class AudioEngine {
         this.gainNode = ctx.createGain();
         this.gainNode.gain.value = 0;
 
-        // LFO for subtle movement
+        // LFO
         this.lfo = ctx.createOscillator();
         this.lfo.type = 'sine';
-        this.lfo.frequency.value = 4; // 4 Hz wobble
+        this.lfo.frequency.value = cfg.lfoFrequency;
         this.lfoGain = ctx.createGain();
-        this.lfoGain.gain.value = 5; // 5 Hz modulation depth
+        this.lfoGain.gain.value = cfg.lfoDepthMin;
 
         // Connect LFO to oscillator frequencies
         this.lfo.connect(this.lfoGain);
@@ -101,54 +100,52 @@ class AudioEngine {
         if (!this.isRunning || !this.ctx) return;
 
         const now = this.ctx.currentTime;
-        const rampTime = 0.08; // Smooth transitions
+        const cfg = this.config;
+        const ramp = cfg.rampTime;
 
         // Energy → Volume
-        const volume = features.energy * 0.4; // Max 0.4 to avoid clipping
-        this.gainNode.gain.linearRampToValueAtTime(volume, now + rampTime);
+        const volume = features.energy * cfg.maxVolume;
+        this.gainNode.gain.linearRampToValueAtTime(volume, now + ramp);
 
-        // Arm angle → Pitch (pentatonic scale for musicality)
+        // Arm angle → Pitch (pentatonic scale)
         const baseFreq = this.mapToPentatonic(features.armAngle);
-        this.osc1.frequency.linearRampToValueAtTime(baseFreq, now + rampTime);
-        this.osc2.frequency.linearRampToValueAtTime(baseFreq * 1.005, now + rampTime);
+        this.osc1.frequency.linearRampToValueAtTime(baseFreq, now + ramp);
+        this.osc2.frequency.linearRampToValueAtTime(baseFreq * cfg.detuneRatio, now + ramp);
 
         // Smoothness → Filter cutoff
-        const cutoff = 200 + (features.smoothness * 3000); // 200-3200 Hz
-        this.filter.frequency.linearRampToValueAtTime(cutoff, now + rampTime);
+        const cutoffRange = cfg.filterCutoffMax - cfg.filterCutoffMin;
+        const cutoff = cfg.filterCutoffMin + (features.smoothness * cutoffRange);
+        this.filter.frequency.linearRampToValueAtTime(cutoff, now + ramp);
 
         // Symmetry → Stereo pan
-        this.panner.pan.linearRampToValueAtTime(features.symmetry, now + rampTime);
+        this.panner.pan.linearRampToValueAtTime(features.symmetry, now + ramp);
 
         // Vertical extension → LFO depth (more extended = less vibrato)
-        const lfoDepth = (1 - features.verticalExtension) * 15;
-        this.lfoGain.gain.linearRampToValueAtTime(lfoDepth, now + rampTime);
+        const lfoRange = cfg.lfoDepthMax - cfg.lfoDepthMin;
+        const lfoDepth = cfg.lfoDepthMin + ((1 - features.verticalExtension) * lfoRange);
+        this.lfoGain.gain.linearRampToValueAtTime(lfoDepth, now + ramp);
 
-        // Energy also affects filter resonance
-        const resonance = 1 + (features.energy * 8);
-        this.filter.Q.linearRampToValueAtTime(resonance, now + rampTime);
+        // Energy → Filter resonance
+        const qRange = cfg.filterQMax - cfg.filterQBase;
+        const resonance = cfg.filterQBase + (features.energy * qRange);
+        this.filter.Q.linearRampToValueAtTime(resonance, now + ramp);
     }
 
     mapToPentatonic(value) {
-        // Map 0-1 to pentatonic scale notes
-        // A minor pentatonic: A, C, D, E, G
-        const baseFreq = 110; // A2
-        const ratios = [1, 1.2, 1.333, 1.5, 1.778, 2, 2.4, 2.667, 3]; // 2 octaves
-
+        const cfg = this.config;
+        const ratios = cfg.pentatonicRatios;
         const index = Math.floor(value * (ratios.length - 1));
         const ratio = ratios[Math.min(index, ratios.length - 1)];
-
-        return baseFreq * ratio;
+        return cfg.pentatonicBaseFreq * ratio;
     }
 
     stop() {
         if (!this.isRunning) return;
 
-        // Fade out
         if (this.gainNode) {
             this.gainNode.gain.linearRampToValueAtTime(0, this.ctx.currentTime + 0.1);
         }
 
-        // Stop and clean up after fade
         setTimeout(() => {
             if (this.osc1) this.osc1.stop();
             if (this.osc2) this.osc2.stop();

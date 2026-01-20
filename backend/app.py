@@ -2,7 +2,7 @@
 Cuerpo Sonoro Web - Backend Server
 FastAPI application with WebSocket for real-time pose feature extraction
 """
-
+import os
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.staticfiles import StaticFiles
 import json
@@ -54,7 +54,9 @@ async def health_check():
     return {"status": "ok"}
 
 
-# Serve frontend static files:
-#   Mounts frontend/ folder at root. When access http://localhost:8000/, serves index.html.
+# Serve frontend static files
 # In production, Nginx handles this, but useful for local development
-app.mount("/", StaticFiles(directory="frontend", html=True), name="frontend")
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+FRONTEND_DIR = os.path.join(BASE_DIR, "frontend")
+
+app.mount("/", StaticFiles(directory=FRONTEND_DIR, html=True), name="frontend")
