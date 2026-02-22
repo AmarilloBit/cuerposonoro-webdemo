@@ -1,90 +1,298 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cuerpo Sonoro - Demo Web</title>
-    <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CuerpoSonoro — The body composes</title>
+  <meta name="description" content="An interactive installation that transforms human movement into real-time sound.">
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Cuerpo Sonoro - Web Demo</h1>
-            <p class="subtitle">Transform your movement into sound</p>
-        </header>
 
-        <main>
-            <div class="video-container">
-                <video id="video" autoplay playsinline></video>
-                <canvas id="canvas"></canvas>
-                <div id="status" class="status">Cargando...</div>
-            </div>
+  <!-- ============================================
+       NAVIGATION
+       ============================================ -->
+  <nav class="nav" id="nav">
+    <a href="index.html" class="nav__logo">
+      <svg class="nav__logo-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" fill="none"
+        stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="200" cy="90" r="30"/>
+        <line x1="200" y1="120" x2="200" y2="140"/>
+        <path d="M160,148 Q160,140 200,138 Q240,140 240,148 L235,245 Q235,252 200,252 Q165,252 165,245 Z"/>
+        <path d="M160,158 Q130,148 100,155 Q80,160 65,150"/>
+        <path d="M65,150 Q58,146 55,150" stroke-width="3.5"/>
+        <path d="M65,150 Q60,155 62,160" stroke-width="3.5"/>
+        <path d="M240,158 Q270,148 300,155 Q320,160 335,150"/>
+        <path d="M335,150 Q342,146 345,150" stroke-width="3.5"/>
+        <path d="M335,150 Q340,155 338,160" stroke-width="3.5"/>
+        <path d="M180,252 L170,325 Q168,335 175,338"/>
+        <path d="M220,252 L230,325 Q232,335 225,338"/>
+        <path d="M50,180 Q32,205 50,235" stroke-width="4" opacity="0.7"/>
+        <path d="M32,170 Q8,205 32,248" stroke-width="3.5" opacity="0.45"/>
+        <path d="M350,180 Q368,205 350,235" stroke-width="4" opacity="0.7"/>
+        <path d="M368,170 Q392,205 368,248" stroke-width="3.5" opacity="0.45"/>
+        <polyline points="100,370 115,362 125,375 140,358 155,372 170,355 185,368 200,352 215,368 230,355 245,372 260,358 275,375 285,362 300,370"
+          stroke-width="3" opacity="0.4"/>
+      </svg>
+      CuerpoSonoro
+    </a>
 
-            <div class="controls">
-                <button id="startBtn" class="btn btn-primary" disabled>
-                    Iniciar
-                </button>
-                <button id="stopBtn" class="btn btn-secondary" disabled>
-                    Detener
-                </button>
-            </div>
+    <ul class="nav__links" id="navLinks">
+      <li><a href="index.html" class="active" data-i18n="nav.demo"></a></li>
+      <li><a href="about.html" data-i18n="nav.about"></a></li>
+      <li>
+        <div class="lang-toggle">
+          <button class="lang-toggle__btn active" data-lang="en">EN</button>
+          <button class="lang-toggle__btn" data-lang="es">ES</button>
+        </div>
+      </li>
+    </ul>
 
-            <div class="features-display">
-                <h3>Features</h3>
-                <div class="feature-grid">
-                    <div class="feature">
-                        <span class="label">Energía</span>
-                        <div class="bar-container">
-                            <div id="bar-energy" class="bar"></div>
-                        </div>
-                        <span id="val-energy" class="value">0.00</span>
-                    </div>
-                    <div class="feature">
-                        <span class="label">Simetría</span>
-                        <div class="bar-container symmetry">
-                            <div id="bar-symmetry" class="bar"></div>
-                        </div>
-                        <span id="val-symmetry" class="value">0.00</span>
-                    </div>
-                    <div class="feature">
-                        <span class="label">Fluidez</span>
-                        <div class="bar-container">
-                            <div id="bar-smoothness" class="bar"></div>
-                        </div>
-                        <span id="val-smoothness" class="value">0.00</span>
-                    </div>
-                    <div class="feature">
-                        <span class="label">Brazos</span>
-                        <div class="bar-container">
-                            <div id="bar-armAngle" class="bar"></div>
-                        </div>
-                        <span id="val-armAngle" class="value">0.00</span>
-                    </div>
-                </div>
-            </div>
+    <button class="nav__toggle" id="navToggle" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
 
-            <div class="connection-status">
-                <span id="wsStatus" class="ws-indicator disconnected"></span>
-                <span id="wsText">Desconectado</span>
-            </div>
-        </main>
 
-        <footer>
-            <p>TFG - Ana María Jurado Crespo - URJC 2025/2026</p>
-        </footer>
+  <!-- ============================================
+       HERO
+       ============================================ -->
+  <section class="hero" id="hero">
+
+    <!-- Inline SVG — cream stroke, visible on teal bg -->
+    <svg class="hero__visual" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" fill="none"
+      stroke="#FDF5E6" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="200" cy="90" r="30"/>
+      <line x1="200" y1="120" x2="200" y2="140"/>
+      <path d="M160,148 Q160,140 200,138 Q240,140 240,148 L235,245 Q235,252 200,252 Q165,252 165,245 Z"/>
+      <path d="M160,158 Q130,148 100,155 Q80,160 65,150"/>
+      <path d="M65,150 Q58,146 55,150" stroke-width="3.5"/>
+      <path d="M65,150 Q60,155 62,160" stroke-width="3.5"/>
+      <path d="M240,158 Q270,148 300,155 Q320,160 335,150"/>
+      <path d="M335,150 Q342,146 345,150" stroke-width="3.5"/>
+      <path d="M335,150 Q340,155 338,160" stroke-width="3.5"/>
+      <path d="M180,252 L170,325 Q168,335 175,338"/>
+      <path d="M220,252 L230,325 Q232,335 225,338"/>
+      <path d="M50,180 Q32,205 50,235" stroke-width="4" opacity="0.7"/>
+      <path d="M32,170 Q8,205 32,248" stroke-width="3.5" opacity="0.45"/>
+      <path d="M32,160 Q0,205 32,258" stroke-width="3" opacity="0.25"/>
+      <path d="M350,180 Q368,205 350,235" stroke-width="4" opacity="0.7"/>
+      <path d="M368,170 Q392,205 368,248" stroke-width="3.5" opacity="0.45"/>
+      <path d="M368,160 Q400,205 368,258" stroke-width="3" opacity="0.25"/>
+      <path d="M182,62 Q175,42 182,22" stroke-width="3" opacity="0.45"/>
+      <path d="M218,62 Q225,42 218,22" stroke-width="3" opacity="0.45"/>
+      <circle cx="120" cy="120" r="3" fill="#FDF5E6" stroke="none" opacity="0.5"/>
+      <circle cx="280" cy="120" r="3" fill="#FDF5E6" stroke="none" opacity="0.5"/>
+      <circle cx="95" cy="210" r="2.5" fill="#FDF5E6" stroke="none" opacity="0.4"/>
+      <circle cx="305" cy="210" r="2.5" fill="#FDF5E6" stroke="none" opacity="0.4"/>
+      <circle cx="200" cy="30" r="2" fill="#FDF5E6" stroke="none" opacity="0.35"/>
+      <polyline points="100,370 115,362 125,375 140,358 155,372 170,355 185,368 200,352 215,368 230,355 245,372 260,358 275,375 285,362 300,370"
+        stroke-width="3" opacity="0.4"/>
+    </svg>
+
+    <p class="hero__overline" data-i18n="hero.overline"></p>
+
+    <!-- Claim block: both lines grouped, separated from description -->
+    <div class="hero__claim">
+      <h1 class="hero__title"     data-i18n="hero.title"></h1>
+      <p  class="hero__title-sub" data-i18n="hero.title.sub"></p>
     </div>
 
-    <!-- MediaPipe -->
-    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose/pose.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
+    <p class="hero__description" data-i18n="hero.description"></p>
 
-    <!-- App modules -->
-    <script src="js/config.js"></script>
-    <script src="js/camera.js"></script>
-    <script src="js/pose.js"></script>
-    <script src="js/websocket.js"></script>
-    <script src="js/audio.js"></script>
-    <script src="js/main.js"></script>
+    <div class="hero__cta">
+      <a href="#demo" class="btn btn--yellow"          data-i18n="hero.cta.try"></a>
+      <a href="about.html" class="btn btn--outline-white" data-i18n="hero.cta.about"></a>
+    </div>
+  </section>
+
+
+  <!-- ============================================
+       DEMO + FEATURES — one continuous section
+       ============================================ -->
+  <section class="demo-section" id="demo">
+    <div class="container">
+
+      <div class="demo-section__header">
+        <p class="section-label" data-i18n="demo.label"></p>
+        <h2 class="section-title" data-i18n="demo.title"></h2>
+      </div>
+
+      <div class="demo-stage">
+
+        <div class="video-wrap">
+          <video id="video" autoplay playsinline></video>
+          <canvas id="canvas"></canvas>
+          <span id="status" class="status-badge" data-i18n="demo.status.loading"></span>
+        </div>
+
+        <div class="demo-sidebar">
+
+          <div class="demo-controls">
+            <button id="startBtn" class="btn btn--teal"         disabled data-i18n="demo.btn.start"></button>
+            <button id="stopBtn"  class="btn btn--outline-teal" disabled data-i18n="demo.btn.stop"></button>
+          </div>
+
+          <div class="features-panel">
+            <p class="features-panel__title" data-i18n="demo.panel.title"></p>
+
+            <div class="feature-row">
+              <span class="feature-row__label" data-i18n="feature.energy"></span>
+              <div class="bar-track"><div id="bar-energy" class="bar-fill"></div></div>
+              <span id="val-energy" class="feature-row__value">0.00</span>
+            </div>
+            <div class="feature-row">
+              <span class="feature-row__label" data-i18n="feature.symmetry"></span>
+              <div class="bar-track symmetry"><div id="bar-symmetry" class="bar-fill symmetry"></div></div>
+              <span id="val-symmetry" class="feature-row__value">0.00</span>
+            </div>
+            <div class="feature-row">
+              <span class="feature-row__label" data-i18n="feature.smoothness"></span>
+              <div class="bar-track"><div id="bar-smoothness" class="bar-fill"></div></div>
+              <span id="val-smoothness" class="feature-row__value">0.00</span>
+            </div>
+            <div class="feature-row">
+              <span class="feature-row__label" data-i18n="feature.arms"></span>
+              <div class="bar-track"><div id="bar-armAngle" class="bar-fill"></div></div>
+              <span id="val-armAngle" class="feature-row__value">0.00</span>
+            </div>
+
+          </div>
+
+          <div class="ws-status">
+            <span id="wsIndicator" class="ws-dot"></span>
+            <span id="wsText" data-i18n="demo.ws.disconnected"></span>
+          </div>
+
+        </div>
+      </div><!-- /demo-stage -->
+
+
+      <!-- Bridge -->
+      <div class="demo-bridge">
+        <div class="demo-bridge__line"></div>
+        <p class="demo-bridge__text" data-i18n="demo.bridge"></p>
+        <div class="demo-bridge__line"></div>
+      </div>
+
+
+      <!-- Features — single-column list -->
+      <div class="features-list">
+
+        <div class="fitem">
+          <div class="fitem__left">
+            <span class="fitem__icon">⚡</span>
+            <div class="fitem__id">
+              <p class="fitem__name"    data-i18n="card.energy.name"></p>
+              <p class="fitem__measure" data-i18n="card.energy.measure"></p>
+            </div>
+          </div>
+          <div class="fitem__right">
+            <p class="fitem__desc" data-i18n="card.energy.desc"></p>
+            <p class="fitem__effect">
+              <span class="fitem__arrow">→</span>
+              <span data-i18n="card.energy.effect"></span>
+            </p>
+          </div>
+        </div>
+
+        <div class="fitem">
+          <div class="fitem__left">
+            <span class="fitem__icon">⚖️</span>
+            <div class="fitem__id">
+              <p class="fitem__name"    data-i18n="card.symmetry.name"></p>
+              <p class="fitem__measure" data-i18n="card.symmetry.measure"></p>
+            </div>
+          </div>
+          <div class="fitem__right">
+            <p class="fitem__desc" data-i18n="card.symmetry.desc"></p>
+            <p class="fitem__effect">
+              <span class="fitem__arrow">→</span>
+              <span data-i18n="card.symmetry.effect"></span>
+            </p>
+          </div>
+        </div>
+
+        <div class="fitem">
+          <div class="fitem__left">
+            <span class="fitem__icon">〰️</span>
+            <div class="fitem__id">
+              <p class="fitem__name"    data-i18n="card.smoothness.name"></p>
+              <p class="fitem__measure" data-i18n="card.smoothness.measure"></p>
+            </div>
+          </div>
+          <div class="fitem__right">
+            <p class="fitem__desc" data-i18n="card.smoothness.desc"></p>
+            <p class="fitem__effect">
+              <span class="fitem__arrow">→</span>
+              <span data-i18n="card.smoothness.effect"></span>
+            </p>
+          </div>
+        </div>
+
+        <div class="fitem">
+          <div class="fitem__left">
+            <span class="fitem__icon">🙆</span>
+            <div class="fitem__id">
+              <p class="fitem__name"    data-i18n="card.arms.name"></p>
+              <p class="fitem__measure" data-i18n="card.arms.measure"></p>
+            </div>
+          </div>
+          <div class="fitem__right">
+            <p class="fitem__desc" data-i18n="card.arms.desc"></p>
+            <p class="fitem__effect">
+              <span class="fitem__arrow">→</span>
+              <span data-i18n="card.arms.effect"></span>
+            </p>
+          </div>
+        </div>
+
+        <div class="fitem">
+          <div class="fitem__left">
+            <span class="fitem__icon">🙌</span>
+            <div class="fitem__id">
+              <p class="fitem__name"    data-i18n="card.vertical.name"></p>
+              <p class="fitem__measure" data-i18n="card.vertical.measure"></p>
+            </div>
+          </div>
+          <div class="fitem__right">
+            <p class="fitem__desc" data-i18n="card.vertical.desc"></p>
+            <p class="fitem__effect">
+              <span class="fitem__arrow">→</span>
+              <span data-i18n="card.vertical.effect"></span>
+            </p>
+          </div>
+        </div>
+
+      </div><!-- /features-list -->
+
+    </div>
+  </section>
+
+
+  <!-- ======= FOOTER ======= -->
+  <footer class="footer">
+    &copy; 2026 <span>maramotto</span>.com &mdash; Made with art and code
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose/pose.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
+
+  <script src="js/i18n.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/camera.js"></script>
+  <script src="js/pose.js"></script>
+  <script src="js/websocket.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/main.js"></script>
+
+  <script>
+    document.getElementById('navToggle').addEventListener('click', () => {
+      document.getElementById('navLinks').classList.toggle('open');
+    });
+  </script>
+
 </body>
 </html>
