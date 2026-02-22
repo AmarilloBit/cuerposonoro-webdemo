@@ -975,21 +975,30 @@ a   { color: inherit; text-decoration: none; }
     padding: 1.5rem;
     gap: 1rem;
     border-bottom: 1px solid rgba(30,107,123,0.12);
+    backdrop-filter: blur(16px);
   }
 
   .nav__links.open { display: flex; }
   .nav__toggle     { display: flex; }
 
+  /* Hero */
+  .hero__visual {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 1.25rem;
+  }
+
+  /* Demo stage */
   .demo-stage {
     grid-template-columns: 1fr;
   }
 
   .demo-controls { justify-content: center; }
 
-  /* Features list collapses to stacked layout on mobile */
+  /* Features list collapses to stacked on mobile */
   .fitem {
     grid-template-columns: 1fr;
-    gap: 1rem;
+    gap: 0.75rem;
   }
 
   .fitem:hover {
@@ -998,9 +1007,20 @@ a   { color: inherit; text-decoration: none; }
     padding-right: 0;
   }
 
+  .fitem__left {
+    align-items: center;
+  }
+
+  /* About sections — add horizontal padding */
+  .about-section { padding: 3.5rem 1.5rem; }
+
+  .about-hero__tagline { max-width: 100%; }
+
+  /* Mara card */
   .mara-card {
     grid-template-columns: 1fr;
     text-align: center;
+    padding: 1.5rem;
   }
 
   .mara-card__avatar { margin: 0 auto; }
@@ -1008,10 +1028,35 @@ a   { color: inherit; text-decoration: none; }
   .about-links { justify-content: center; }
 
   .pullquote { font-size: 1.1rem; }
+
+  /* Mara CTA */
+  .mara-cta { padding: 3.5rem 1.5rem; }
+
+  .mara-cta__inner { max-width: 100%; }
 }
 
 @media (max-width: 480px) {
-  .features-grid { grid-template-columns: 1fr; }
-
+  /* Hero CTAs stack */
   .hero__cta { flex-direction: column; align-items: center; }
+
+  /* Buttons full width on very small screens */
+  .hero__cta .btn { width: 100%; text-align: center; justify-content: center; }
+
+  /* Demo controls stack */
+  .demo-controls { flex-direction: column; }
+
+  .demo-controls .btn { width: 100%; text-align: center; }
+
+  /* About links stack */
+  .about-links { flex-direction: column; }
+
+  .about-links .btn { width: 100%; text-align: center; justify-content: center; }
+
+  /* Tighter section padding on very small screens */
+  .about-section { padding: 2.5rem 1.25rem; }
+
+  .mara-cta { padding: 2.5rem 1.25rem; }
+
+  /* Reduce demo-section padding */
+  .demo-section .container { padding: 0 1.25rem; }
 }
