@@ -14,7 +14,26 @@
        ============================================ -->
   <nav class="nav" id="nav">
     <a href="index.html" class="nav__logo">
-      <img src="img/cuerposonoro-visual.svg" alt="CuerpoSonoro" class="nav__logo-img">
+      <svg class="nav__logo-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" fill="none"
+        stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="200" cy="90" r="30"/>
+        <line x1="200" y1="120" x2="200" y2="140"/>
+        <path d="M160,148 Q160,140 200,138 Q240,140 240,148 L235,245 Q235,252 200,252 Q165,252 165,245 Z"/>
+        <path d="M160,158 Q130,148 100,155 Q80,160 65,150"/>
+        <path d="M65,150 Q58,146 55,150" stroke-width="3.5"/>
+        <path d="M65,150 Q60,155 62,160" stroke-width="3.5"/>
+        <path d="M240,158 Q270,148 300,155 Q320,160 335,150"/>
+        <path d="M335,150 Q342,146 345,150" stroke-width="3.5"/>
+        <path d="M335,150 Q340,155 338,160" stroke-width="3.5"/>
+        <path d="M180,252 L170,325 Q168,335 175,338"/>
+        <path d="M220,252 L230,325 Q232,335 225,338"/>
+        <path d="M50,180 Q32,205 50,235" stroke-width="4" opacity="0.7"/>
+        <path d="M32,170 Q8,205 32,248" stroke-width="3.5" opacity="0.45"/>
+        <path d="M350,180 Q368,205 350,235" stroke-width="4" opacity="0.7"/>
+        <path d="M368,170 Q392,205 368,248" stroke-width="3.5" opacity="0.45"/>
+        <polyline points="100,370 115,362 125,375 140,358 155,372 170,355 185,368 200,352 215,368 230,355 245,372 260,358 275,375 285,362 300,370"
+          stroke-width="3" opacity="0.4"/>
+      </svg>
       CuerpoSonoro
     </a>
 
@@ -49,14 +68,15 @@
 
   <!-- ============================================
        THE PROJECT
+       — Everything inside .about-content for consistent column alignment
        ============================================ -->
   <section class="about-section">
     <div class="container">
-
-      <p class="section-label" data-i18n="about.project.label"></p>
-      <h2 class="section-title" style="margin-bottom:2.5rem" data-i18n="about.project.title"></h2>
-
       <div class="about-content">
+
+        <p class="section-label" data-i18n="about.project.label"></p>
+        <h2 class="about-section__title" data-i18n="about.project.title"></h2>
+
         <p data-i18n-html="about.project.p1"></p>
         <p data-i18n="about.project.p2"></p>
         <p data-i18n="about.project.p3"></p>
@@ -66,69 +86,56 @@
         <blockquote class="pullquote" data-i18n="about.project.pullquote"></blockquote>
 
         <div class="about-links">
-          <a
-            href="https://maramotto.com/cuerposonoro.html"
-            target="_blank" rel="noopener"
-            class="btn btn--teal"
-            data-i18n="about.links.web"
-          ></a>
-          <a
-            href="https://github.com/maramotto/cuerposonoro"
-            target="_blank" rel="noopener"
-            class="btn btn--outline-teal"
-            data-i18n="about.links.github"
-          ></a>
-          <a
-            href="index.html"
-            class="btn btn--outline-teal"
-            data-i18n="about.links.demo"
-          ></a>
+          <a href="https://maramotto.com/cuerposonoro.html" target="_blank" rel="noopener"
+            class="btn btn--teal" data-i18n="about.links.web"></a>
+          <a href="https://github.com/maramotto/cuerposonoro" target="_blank" rel="noopener"
+            class="btn btn--outline-teal" data-i18n="about.links.github"></a>
+          <a href="index.html"
+            class="btn btn--outline-teal" data-i18n="about.links.demo"></a>
         </div>
-      </div>
 
+      </div>
     </div>
   </section>
 
 
   <!-- ============================================
-       MARAMOTTO
+       MARAMOTTO — teal background for strong contrast
        ============================================ -->
-  <section class="about-section about-section--alt">
+  <section class="about-section about-section--mara">
     <div class="container">
+      <div class="about-content">
 
-      <p class="section-label" data-i18n="about.mara.label"></p>
+        <p class="section-label about-mara-label" data-i18n="about.mara.label"></p>
 
-      <div class="about-content" style="margin-top:2rem">
-        <div class="mara-section">
-          <div class="mara-section__avatar">M</div>
-          <div>
-            <p class="mara-section__name" data-i18n="about.mara.name"></p>
-            <p class="mara-section__role" data-i18n="about.mara.role"></p>
+        <div class="mara-card">
+          <div class="mara-card__avatar">M</div>
+          <div class="mara-card__body">
+            <p class="mara-card__name" data-i18n="about.mara.name"></p>
+            <p class="mara-card__role" data-i18n="about.mara.role"></p>
             <p data-i18n="about.mara.p1"></p>
             <p data-i18n="about.mara.p2"></p>
-            <a
-              href="https://maramotto.com"
-              target="_blank" rel="noopener"
-              class="mara-link"
-              data-i18n="about.mara.link"
-            ></a>
+            <a href="https://maramotto.com" target="_blank" rel="noopener"
+              class="mara-link" data-i18n="about.mara.link"></a>
           </div>
         </div>
-      </div>
 
+      </div>
     </div>
   </section>
 
 
-  <!-- ======= FOOTER ======= -->
+  <!-- ============================================
+       FOOTER — same as maramotto.com
+       ============================================ -->
   <footer class="footer">
-    &copy; 2026 <span>maramotto</span>.com &mdash; Made with art and code
+    <p class="footer__text">
+      &copy; 2026 <a href="https://maramotto.com" target="_blank" rel="noopener">maramotto</a>.com &mdash; Made with art and code
+    </p>
   </footer>
 
 
-  <!-- ============================================
-       SCRIPTS
-       ============================================ -->
+  <!-- SCRIPTS -->
   <script src="js/i18n.js"></script>
 
   <script>
