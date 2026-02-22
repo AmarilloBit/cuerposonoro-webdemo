@@ -729,18 +729,33 @@ a   { color: inherit; text-decoration: none; }
 }
 
 /* ============================================
-   ABOUT CONTENT
+   ABOUT CONTENT — consistent 680px column
    ============================================ */
 
 .about-section {
   padding: 5rem 0;
+  background: var(--cream);
 }
 
-.about-section--alt { background: var(--cream-dark); }
+/* Strong contrast for maramotto section — teal bg like the hero */
+.about-section--mara {
+  background: var(--teal);
+}
 
 .about-content {
   max-width: 680px;
   margin: 0 auto;
+}
+
+/* Title sits inside .about-content — aligned with text below */
+.about-section__title {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+  font-weight: 800;
+  color: var(--dark);
+  letter-spacing: -0.02em;
+  margin-top: 0.4rem;
+  margin-bottom: 2rem;
 }
 
 .about-content p {
@@ -757,6 +772,12 @@ a   { color: inherit; text-decoration: none; }
   color: var(--teal);
 }
 
+/* Section label colour override inside teal section */
+.about-mara-label {
+  color: var(--yellow) !important;
+  opacity: 0.8;
+}
+
 /* Pullquote */
 .pullquote {
   border-left: 3px solid var(--teal);
@@ -770,7 +791,7 @@ a   { color: inherit; text-decoration: none; }
   letter-spacing: -0.01em;
 }
 
-/* Links section */
+/* Links row */
 .about-links {
   display: flex;
   flex-wrap: wrap;
@@ -778,70 +799,72 @@ a   { color: inherit; text-decoration: none; }
   margin-top: 2rem;
 }
 
-/* Mara section */
-.mara-section {
+/* ── Mara card ── */
+.mara-card {
   display: grid;
   grid-template-columns: auto 1fr;
-  gap: 2.5rem;
+  gap: 2rem;
   align-items: start;
-  padding: 3rem;
-  background: var(--white);
-  border-radius: 24px;
-  border: 1px solid rgba(30, 107, 123, 0.1);
+  margin-top: 1.5rem;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
 }
 
-.mara-section__avatar {
-  width: 80px; height: 80px;
+.mara-card__avatar {
+  width: 64px; height: 64px;
   border-radius: 50%;
-  background: var(--teal);
+  background: var(--yellow);
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: 'Syne', sans-serif;
   font-weight: 800;
-  font-size: 1.6rem;
-  color: var(--yellow);
+  font-size: 1.4rem;
+  color: var(--teal-dark);
   flex-shrink: 0;
 }
 
-.mara-section__name {
+.mara-card__name {
   font-family: 'Syne', sans-serif;
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   font-weight: 800;
-  color: var(--dark);
-  margin-bottom: 0.15rem;
+  color: var(--white) !important;
+  margin-bottom: 0.1rem !important;
 }
 
-.mara-section__role {
-  font-size: 0.82rem;
+.mara-card__role {
+  font-size: 0.8rem !important;
   font-weight: 600;
-  color: var(--teal);
+  color: var(--yellow) !important;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  margin-bottom: 1rem;
+  margin-bottom: 1rem !important;
 }
 
-.mara-section p {
-  font-size: 0.95rem;
-  line-height: 1.7;
-  color: var(--text);
-  margin-bottom: 1rem;
+.mara-card__body p {
+  color: rgba(255, 255, 255, 0.8) !important;
+  font-size: 0.95rem !important;
+  line-height: 1.7 !important;
+  margin-bottom: 0.85rem !important;
 }
 
 .mara-link {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  color: var(--teal);
+  color: var(--yellow);
   font-weight: 700;
   font-size: 0.9rem;
-  transition: gap 0.2s, color 0.2s;
+  transition: gap 0.2s, opacity 0.2s;
+  margin-top: 0.25rem;
 }
 
-.mara-link:hover { gap: 0.7rem; color: var(--teal-dark); }
+.mara-link:hover { gap: 0.7rem; opacity: 0.85; }
 
 /* ============================================
-   FOOTER
+   FOOTER — same as maramotto.com
    ============================================ */
 
 .footer {
@@ -851,21 +874,19 @@ a   { color: inherit; text-decoration: none; }
 }
 
 .footer__text {
-  font-size: 0.82rem;
-  color: rgba(255,255,255,0.4);
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.45);
 }
 
 .footer__text a {
   color: var(--yellow);
+  text-decoration: none;
   transition: color 0.2s;
 }
 
 .footer__text a:hover { color: var(--white); }
 
-.footer__sep {
-  margin: 0 0.6rem;
-  opacity: 0.25;
-}
+.footer__text span { color: var(--yellow); }
 
 /* ============================================
    RESPONSIVE
@@ -907,13 +928,12 @@ a   { color: inherit; text-decoration: none; }
     padding-right: 0;
   }
 
-  .mara-section {
+  .mara-card {
     grid-template-columns: 1fr;
-    padding: 2rem;
     text-align: center;
   }
 
-  .mara-section__avatar { margin: 0 auto; }
+  .mara-card__avatar { margin: 0 auto; }
 
   .about-links { justify-content: center; }
 
