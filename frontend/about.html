@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About — CuerpoSonoro</title>
+  <meta name="description" content="CuerpoSonoro — the body as creator. An artistic and technological project by maramotto.">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ============================================
+       NAVIGATION
+       ============================================ -->
+  <nav class="nav" id="nav">
+    <a href="index.html" class="nav__logo">
+      <img src="img/cuerposonoro-visual.svg" alt="CuerpoSonoro" class="nav__logo-img">
+      CuerpoSonoro
+    </a>
+
+    <ul class="nav__links" id="navLinks">
+      <li><a href="index.html" data-i18n="nav.demo"></a></li>
+      <li><a href="about.html" class="active" data-i18n="nav.about"></a></li>
+      <li>
+        <div class="lang-toggle">
+          <button class="lang-toggle__btn active" data-lang="en">EN</button>
+          <button class="lang-toggle__btn" data-lang="es">ES</button>
+        </div>
+      </li>
+    </ul>
+
+    <button class="nav__toggle" id="navToggle" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+
+  <!-- ============================================
+       HERO
+       ============================================ -->
+  <section class="about-hero">
+    <div class="about-hero__inner">
+      <p class="about-hero__overline" data-i18n="about.hero.overline"></p>
+      <h1 class="about-hero__title"  data-i18n="about.hero.title"></h1>
+      <p class="about-hero__tagline" data-i18n="about.hero.tagline"></p>
+    </div>
+  </section>
+
+
+  <!-- ============================================
+       THE PROJECT
+       ============================================ -->
+  <section class="about-section">
+    <div class="container">
+
+      <p class="section-label" data-i18n="about.project.label"></p>
+      <h2 class="section-title" style="margin-bottom:2.5rem" data-i18n="about.project.title"></h2>
+
+      <div class="about-content">
+        <p data-i18n-html="about.project.p1"></p>
+        <p data-i18n="about.project.p2"></p>
+        <p data-i18n="about.project.p3"></p>
+        <p data-i18n="about.project.p4"></p>
+        <p data-i18n="about.project.p5"></p>
+
+        <blockquote class="pullquote" data-i18n="about.project.pullquote"></blockquote>
+
+        <div class="about-links">
+          <a
+            href="https://maramotto.com/cuerposonoro.html"
+            target="_blank" rel="noopener"
+            class="btn btn--teal"
+            data-i18n="about.links.web"
+          ></a>
+          <a
+            href="https://github.com/maramotto/cuerposonoro"
+            target="_blank" rel="noopener"
+            class="btn btn--outline-teal"
+            data-i18n="about.links.github"
+          ></a>
+          <a
+            href="index.html"
+            class="btn btn--outline-teal"
+            data-i18n="about.links.demo"
+          ></a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ============================================
+       MARAMOTTO
+       ============================================ -->
+  <section class="about-section about-section--alt">
+    <div class="container">
+
+      <p class="section-label" data-i18n="about.mara.label"></p>
+
+      <div class="about-content" style="margin-top:2rem">
+        <div class="mara-section">
+          <div class="mara-section__avatar">M</div>
+          <div>
+            <p class="mara-section__name" data-i18n="about.mara.name"></p>
+            <p class="mara-section__role" data-i18n="about.mara.role"></p>
+            <p data-i18n="about.mara.p1"></p>
+            <p data-i18n="about.mara.p2"></p>
+            <a
+              href="https://maramotto.com"
+              target="_blank" rel="noopener"
+              class="mara-link"
+              data-i18n="about.mara.link"
+            ></a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ======= FOOTER ======= -->
+  <footer class="footer">
+    &copy; 2026 <span>maramotto</span>.com &mdash; Made with art and code
+  </footer>
+
+
+  <!-- ============================================
+       SCRIPTS
+       ============================================ -->
+  <script src="js/i18n.js"></script>
+
+  <script>
+    document.getElementById('navToggle').addEventListener('click', () => {
+      document.getElementById('navLinks').classList.toggle('open');
+    });
+  </script>
+
+</body>
+</html>
