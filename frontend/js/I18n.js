@@ -32,14 +32,20 @@ const TRANSLATIONS = {
     'demo.ws.connected':       'Connected',
     'demo.ws.disconnected':    'Disconnected',
 
+    /* --- CAMERA NOTE --- */
+    'demo.camera.note': 'Camera access required — your browser will ask for permission when you click Start',
+
+    /* --- MARAMOTTO CTA --- */
+    'cta.mara.label':   'The maker',
+    'cta.mara.heading': 'Code, art and curiosity',
+    'cta.mara.text':    'CuerpoSonoro is part of a wider universe. If you\'re curious about what else happens when code meets art, music, light and recycled materials — come find me.',
+    'cta.mara.link':    'maramotto.com →',
+
     /* Feature labels in bars */
     'feature.energy':     'Energy',
     'feature.symmetry':   'Symmetry',
     'feature.smoothness': 'Smoothness',
     'feature.arms':       'Arms',
-
-    /* --- INDEX: BRIDGE --- */
-    'demo.bridge': 'Each number above is sculpting the sound — here\'s how',
 
     /* --- INDEX: HOW IT WORKS --- */
     'howto.label':    'How it works',
@@ -50,27 +56,27 @@ const TRANSLATIONS = {
     'card.energy.name':     'Energy',
     'card.energy.measure':  'Overall motion intensity',
     'card.energy.desc':     'Measures how much your body is moving at any given moment. Calculated from the velocity of key joints between frames.',
-    'card.energy.effect':   'More movement → louder volume and brighter, more resonant sound.',
+    'card.energy.effect':   'More movement: louder volume and brighter, more resonant sound.',
 
     'card.symmetry.name':     'Symmetry',
     'card.symmetry.measure':  'Left–right balance',
     'card.symmetry.desc':     'Compares the position and movement of the left and right sides of your body. A centered body produces a centered sound.',
-    'card.symmetry.effect':   'Leaning left → sound pans left. Leaning right → sound pans right.',
+    'card.symmetry.effect':   'Leaning left: sound pans left. Leaning right: sound pans right.',
 
     'card.smoothness.name':     'Smoothness',
     'card.smoothness.measure':  'Fluidity vs. abruptness',
-    'card.smoothness.desc':     'Measures the jerk of your movement — how abruptly acceleration changes. Slow, fluid gestures produce a very different texture to sharp, sudden ones.',
-    'card.smoothness.effect':   'Fluid movement → open, warm filter. Abrupt movement → closed, darker texture.',
+    'card.smoothness.desc':     'Measures the jerk of your movement, how abruptly acceleration changes. Slow, fluid gestures produce a very different texture to sharp, sudden ones.',
+    'card.smoothness.effect':   'Fluid movement: open, warm filter. Abrupt movement: closed, darker texture.',
 
     'card.arms.name':     'Arm angle',
     'card.arms.measure':  'Arm extension',
-    'card.arms.desc':     'Tracks the average angle of your arms relative to your torso. Arms fully extended reads as maximum; arms folded close to the body as minimum.',
-    'card.arms.effect':   'Arms open wide → higher pitch (pentatonic scale). Arms folded → lower pitch.',
+    'card.arms.desc':     'Tracks the average angle of your arms relative to your torso. Arms fully extended reads as maximum, arms folded close to the body as minimum.',
+    'card.arms.effect':   'Arms open wide: higher pitch (pentatonic scale). Arms folded: lower pitch.',
 
     'card.vertical.name':     'Vertical extension',
     'card.vertical.measure':  'Height of the hands',
     'card.vertical.desc':     'Measures how high your hands are relative to your body. Raising your arms overhead activates deeper modulation of the sound.',
-    'card.vertical.effect':   'Hands raised → deeper vibrato and more modulation.',
+    'card.vertical.effect':   'Hands raised: deeper vibrato and more modulation.',
 
     /* --- ABOUT PAGE --- */
     'about.hero.overline': 'CuerpoSonoro — An artistic and technological project',
@@ -130,14 +136,20 @@ const TRANSLATIONS = {
     'demo.ws.connected':       'Conectado',
     'demo.ws.disconnected':    'Desconectado',
 
+    /* --- CAMERA NOTE --- */
+    'demo.camera.note': 'Necesitas dar permiso a la cámara — el navegador te lo pedirá cuando pulses Iniciar',
+
+    /* --- MARAMOTTO CTA --- */
+    'cta.mara.label':   'La creadora',
+    'cta.mara.heading': 'Código, arte y curiosidad',
+    'cta.mara.text':    'CuerpoSonoro es parte de un universo más amplio. Si tienes curiosidad por lo que pasa cuando el código se encuentra con el arte, la música, la luz y los materiales reciclados — ven a buscarme.',
+    'cta.mara.link':    'maramotto.com →',
+
     /* Feature labels in bars */
     'feature.energy':     'Energía',
     'feature.symmetry':   'Simetría',
     'feature.smoothness': 'Fluidez',
     'feature.arms':       'Brazos',
-
-    /* --- INDEX: BRIDGE --- */
-    'demo.bridge': 'Cada número de arriba está esculpiendo el sonido — así es cómo',
 
     /* --- INDEX: HOW IT WORKS --- */
     'howto.label':    'Cómo funciona',
@@ -148,27 +160,27 @@ const TRANSLATIONS = {
     'card.energy.name':     'Energía',
     'card.energy.measure':  'Intensidad global del movimiento',
     'card.energy.desc':     'Mide cuánto se mueve tu cuerpo en cada instante. Se calcula a partir de la velocidad de las articulaciones clave entre fotogramas.',
-    'card.energy.effect':   'Más movimiento → mayor volumen y sonido más brillante y resonante.',
+    'card.energy.effect':   'Más movimiento: mayor volumen y sonido más brillante y resonante.',
 
     'card.symmetry.name':     'Simetría',
     'card.symmetry.measure':  'Equilibrio izquierda–derecha',
     'card.symmetry.desc':     'Compara la posición y el movimiento de los lados izquierdo y derecho del cuerpo. Un cuerpo centrado produce un sonido centrado.',
-    'card.symmetry.effect':   'Inclinarte a la izquierda → el sonido se desplaza a la izquierda. A la derecha → a la derecha.',
+    'card.symmetry.effect':   'Inclinarte a la izquierda: el sonido se desplaza a la izquierda. A la derecha: a la derecha.',
 
     'card.smoothness.name':     'Fluidez',
     'card.smoothness.measure':  'Fluidez vs. brusquedad',
-    'card.smoothness.desc':     'Mide el jerk del movimiento — cómo cambia de forma brusca la aceleración. Los gestos lentos y fluidos producen una textura muy diferente a los repentinos.',
-    'card.smoothness.effect':   'Movimiento fluido → filtro abierto y cálido. Movimiento brusco → textura cerrada y oscura.',
+    'card.smoothness.desc':     'Mide el jerk del movimiento, cómo cambia de forma brusca la aceleración. Los gestos lentos y fluidos producen una textura muy diferente a los repentinos.',
+    'card.smoothness.effect':   'Movimiento fluido: filtro abierto y cálido. Movimiento brusco: textura cerrada y oscura.',
 
     'card.arms.name':     'Ángulo de brazos',
     'card.arms.measure':  'Extensión de brazos',
-    'card.arms.desc':     'Rastrea el ángulo medio de los brazos respecto al torso. Brazos completamente extendidos = máximo; brazos pegados al cuerpo = mínimo.',
-    'card.arms.effect':   'Brazos abiertos → tono más agudo (escala pentatónica). Brazos cerrados → tono más grave.',
+    'card.arms.desc':     'Rastrea el ángulo medio de los brazos respecto al torso. Brazos completamente extendidos equivale a máximo, brazos pegados al cuerpo a mínimo.',
+    'card.arms.effect':   'Brazos abiertos: tono más agudo (escala pentatónica). Brazos cerrados: tono más grave.',
 
     'card.vertical.name':     'Extensión vertical',
     'card.vertical.measure':  'Altura de las manos',
     'card.vertical.desc':     'Mide cómo de alto están las manos respecto al cuerpo. Levantar los brazos por encima de la cabeza activa una modulación más profunda del sonido.',
-    'card.vertical.effect':   'Manos en alto → vibrato más profundo y mayor modulación.',
+    'card.vertical.effect':   'Manos en alto: vibrato más profundo y mayor modulación.',
 
     /* --- ABOUT PAGE --- */
     'about.hero.overline': 'CuerpoSonoro — Un proyecto artístico y tecnológico',
