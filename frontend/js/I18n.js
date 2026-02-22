@@ -33,12 +33,12 @@ const TRANSLATIONS = {
     'demo.ws.disconnected':    'Disconnected',
 
     /* --- CAMERA NOTE --- */
-    'demo.camera.note': 'Camera access required — your browser will ask for permission when you click Start',
+    'demo.camera.note': 'Camera access required. Please give your browser permission to use the camera when you click Start',
 
     /* --- MARAMOTTO CTA --- */
     'cta.mara.label':   'The maker',
     'cta.mara.heading': 'Code, art and curiosity',
-    'cta.mara.text':    'CuerpoSonoro is part of a wider universe. If you\'re curious about what else happens when code meets art, music, light and recycled materials — come find me.',
+    'cta.mara.text':    'CuerpoSonoro is part of a wider universe. If you\'re curious about what else happens when code meets art, music, light and recycled materials, come find me.',
     'cta.mara.link':    'maramotto.com →',
 
     /* Feature labels in bars */
@@ -88,8 +88,8 @@ const TRANSLATIONS = {
 
     'about.project.p1': 'CuerpoSonoro begins with a simple, intimate question: <em>what if my body could be the creator of something beautiful?</em>',
     'about.project.p2': 'To exist, to move, and for that movement to become sound.',
-    'about.project.p3': 'This project grows out of a need to return to being. To gather the pieces and learn to inhabit a body that for a long time existed only as armor — as a place of pain and damage, as something wrong that had to change at any cost.',
-    'about.project.p4': 'CuerpoSonoro is my way back to it. To listen to it. To let its movement — imperfect, real, mine — be the origin of something beautiful, not the consequence of the violences that run through it.',
+    'about.project.p3': 'This project grows out of a need to return to being. To gather the pieces and learn to inhabit a body that for a long time existed only as armor, as a place of pain and damage, as something wrong that had to change at any cost.',
+    'about.project.p4': 'CuerpoSonoro is my way back to it. To listen to it. To let its movement (imperfect, real, mine) be the origin of something beautiful, not the consequence of the violences that run through it.',
     'about.project.p5': 'It is the first in a series of three projects that place the body at the center of my artistic and technological research.',
     'about.project.pullquote': 'The body as creator.',
 
@@ -102,7 +102,7 @@ const TRANSLATIONS = {
     'about.mara.name':  'Mara',
     'about.mara.role':  'Software engineer · Artist · Creative technologist',
     'about.mara.p1':    'I work at the intersection of code and art: programs that listen, tools that create, systems that feel.',
-    'about.mara.p2':    'I\'m passionate about dreaming up and building those ideas that make my heart leap when they first appear — whether in code, music, light, paint, or recycled materials.',
+    'about.mara.p2':    'I\'m passionate about dreaming up and building those ideas that make my heart leap when they first appear, whether in code, music, light, paint, or recycled materials.',
     'about.mara.link':  'maramotto.com →',
 
     /* --- FOOTER --- */
@@ -137,12 +137,12 @@ const TRANSLATIONS = {
     'demo.ws.disconnected':    'Desconectado',
 
     /* --- CAMERA NOTE --- */
-    'demo.camera.note': 'Necesitas dar permiso a la cámara — el navegador te lo pedirá cuando pulses Iniciar',
+    'demo.camera.note': 'Necesitas dar permiso a la cámara en el navegador antes de pulsar Iniciar',
 
     /* --- MARAMOTTO CTA --- */
     'cta.mara.label':   'La creadora',
     'cta.mara.heading': 'Código, arte y curiosidad',
-    'cta.mara.text':    'CuerpoSonoro es parte de un universo más amplio. Si tienes curiosidad por lo que pasa cuando el código se encuentra con el arte, la música, la luz y los materiales reciclados — ven a buscarme.',
+    'cta.mara.text':    'CuerpoSonoro es parte de un universo más amplio. Si tienes curiosidad por lo que pasa cuando el código se encuentra con el arte, la música, la luz y los materiales reciclados, ven a buscarme.',
     'cta.mara.link':    'maramotto.com →',
 
     /* Feature labels in bars */
@@ -192,8 +192,8 @@ const TRANSLATIONS = {
 
     'about.project.p1': 'CuerpoSonoro nace de una pregunta sencilla e íntima: <em>¿y si mi cuerpo pudiera ser el creador de algo bello?</em>',
     'about.project.p2': 'Ser, moverse, y que ese movimiento se convierta en sonido.',
-    'about.project.p3': 'Este proyecto surge de la necesidad de volver a ser. De recoger los pedazos y aprender a habitar un cuerpo que durante mucho tiempo existió solo como coraza — como lugar de dolor y de delito, como algo erróneo que debía cambiar a cualquier precio.',
-    'about.project.p4': 'CuerpoSonoro es mi manera de volver a él. De escucharlo. De hacer que su movimiento — imperfecto, real, mío — sea el origen de algo bello, y no la consecuencia de las violencias que lo atraviesan.',
+    'about.project.p3': 'Este proyecto surge de la necesidad de volver a ser. De recoger los pedazos y aprender a habitar un cuerpo que durante mucho tiempo existió solo como coraza, como lugar de dolor y de delito, como algo erróneo que debía cambiar a cualquier precio.',
+    'about.project.p4': 'CuerpoSonoro es mi manera de volver a él. De escucharlo. De hacer que su movimiento (imperfecto, real, mío) sea el origen de algo bello, y no la consecuencia de las violencias que lo atraviesan.',
     'about.project.p5': 'Es el primero de una serie de tres proyectos que ponen el cuerpo en el centro de mi investigación artística y tecnológica.',
     'about.project.pullquote': 'El cuerpo como creador.',
 
@@ -206,11 +206,11 @@ const TRANSLATIONS = {
     'about.mara.name':  'Mara',
     'about.mara.role':  'Ingeniera de software · Artista · Tecnóloga creativa',
     'about.mara.p1':    'Trabajo en el cruce entre el código y el arte: programas que escuchan, herramientas que crean, sistemas que sienten.',
-    'about.mara.p2':    'Me apasiona inventar y llevar a cabo esas ideas que cuando se me ocurren me dan un vuelco el corazón y me llenan de energía — ya sea con código, con música, con luz, con pintura o con materiales reciclados.',
+    'about.mara.p2':    'Me apasiona inventar y llevar a cabo esas ideas que cuando se me ocurren me dan un vuelco el corazón y me llenan de energía, ya sea con código, con música, con luz, con pintura o con materiales reciclados.',
     'about.mara.link':  'maramotto.com →',
 
     /* --- FOOTER --- */
-    'footer.text': 'CuerpoSonoro — un proyecto de',
+    'footer.text': 'CuerpoSonoro - un proyecto de',
     'footer.tfg':  'TFG · Ingeniería del Software · URJC 2025/2026',
   }
 };
