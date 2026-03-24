@@ -10,7 +10,7 @@ const TRANSLATIONS = {
     /* --- NAV --- */
     'nav.demo':    'Demo',
     'nav.how':     'How it works',
-    'nav.about':   'About',
+    'nav.about':   'About me',
 
     /* --- INDEX: HERO --- */
     'hero.overline':    'An interactive installation',
@@ -116,14 +116,34 @@ const TRANSLATIONS = {
     'footer.tfg':  'TFG · Software Engineering · URJC 2025/2026',
 
     /* --- HOW IT WORKS PAGE --- */
-    'how.hero.overline': 'CuerpoSonoro — Technical documentation',
+    'how.hero.overline': 'CuerpoSonoro (Technical documentation)',
     'how.hero.title':    'How the system works',
     'how.hero.tagline':  'Computer vision, motion feature extraction and real-time sound synthesis. No pre-programmed sound. The camera records nothing.',
 
     'how.pipeline.label': 'The pipeline',
     'how.pipeline.title': 'From movement to sound',
-    'how.pipeline.p1':    'A camera captures the performer at 30 frames per second. MediaPipe processes each frame in the browser (web demo) or locally in Python (installation), detecting 33 body landmarks — key points on joints, extremities and face. This data never leaves the machine as video or images: only coordinate arrays are processed.',
-    'how.pipeline.p2':    'Those coordinates reach the vision_processor module, which extracts dozens of motion descriptors from each frame. Each descriptor maps to one or more sound parameters and is sent in real time to SuperCollider via OSC or to an external synthesizer via MIDI/MPE. The body becomes the instrument.',
+    'how.pipeline.p1':    'A camera captures the performer at 30 frames per second. MediaPipe processes each frame in the browser (web demo) or locally in Python (installation), detecting 33 body landmarks: key points on joints, extremities and face. This data never leaves the machine as video or images, only coordinate arrays are processed.',
+    'how.pipeline.p2':    'Those coordinates reach the <strong class="vp-bold">vision_processor</strong> module, which extracts dozens of motion descriptors from each frame. Each descriptor maps to one or more sound parameters and is sent in real time to SuperCollider via OSC or to an external synthesizer via MIDI/MPE. The body becomes the instrument.',
+
+    'how.step1.number': 'Step 1',
+    'how.step1.title':  'Camera',
+    'how.step1.desc':   'A camera captures the performer at 30 frames per second. No video is recorded. Only coordinate arrays are processed.',
+
+    'how.step2.number': 'Step 2',
+    'how.step2.title':  'Vision Processor',
+    'how.step2.desc':   'MediaPipe detects 33 body landmarks per frame: joints, extremities and face. The skeleton is tracked in real time.',
+
+    'how.step3.number': 'Step 3',
+    'how.step3.title':  'Feature Extraction',
+    'how.step3.desc':   'The vision_processor module computes dozens of motion descriptors from each frame: energy, symmetry, smoothness, jerk, foot position and more.',
+
+    'how.step4.number': 'Step 4',
+    'how.step4.title':  'Mapping',
+    'how.step4.desc':   'Each descriptor maps to a sound parameter: foot position selects the chord, hand height picks the melody note, knee angle sets volume, head tilt filters the timbre.',
+
+    'how.step5.number': 'Step 5',
+    'how.step5.title':  'MIDI Data',
+    'how.step5.desc':   'The mapped parameters are sent in real time via OSC to SuperCollider or via MIDI/MPE to an external synthesizer. No sound is pre-programmed.',
 
     'how.descriptors.label': 'Motion descriptors',
     'how.descriptors.title': 'What the system measures',
@@ -204,7 +224,7 @@ const TRANSLATIONS = {
     /* --- NAV --- */
     'nav.demo':    'Demo',
     'nav.how':     'Cómo funciona',
-    'nav.about':   'Sobre el proyecto',
+    'nav.about':   'Sobre mí',
 
     /* --- INDEX: HERO --- */
     'hero.overline':    'Una instalación interactiva',
@@ -310,14 +330,34 @@ const TRANSLATIONS = {
     'footer.tfg':  'TFG · Ingeniería del Software · URJC 2025/2026',
 
     /* --- HOW IT WORKS PAGE --- */
-    'how.hero.overline': 'CuerpoSonoro — Documentación técnica',
+    'how.hero.overline': 'CuerpoSonoro (Documentación técnica)',
     'how.hero.title':    'Cómo funciona el sistema',
     'how.hero.tagline':  'Visión por computador, extracción de descriptores de movimiento y síntesis sonora en tiempo real. Sin sonido pre-programado. La cámara no graba nada.',
 
     'how.pipeline.label': 'El pipeline',
     'how.pipeline.title': 'Del movimiento al sonido',
-    'how.pipeline.p1':    'Una cámara captura a la persona a 30 fotogramas por segundo. MediaPipe procesa cada fotograma en el navegador (demo web) o localmente en Python (instalación), detectando 33 puntos del cuerpo: articulaciones, extremidades y cara. Esta información nunca sale de la máquina como vídeo o imagen: solo se procesan arrays de coordenadas.',
-    'how.pipeline.p2':    'Esas coordenadas llegan al módulo vision_processor, que extrae decenas de descriptores de movimiento en cada fotograma. Cada descriptor se mapea a uno o más parámetros sonoros y se envía en tiempo real a SuperCollider vía OSC o a un sintetizador externo vía MIDI/MPE. El cuerpo se convierte en el instrumento.',
+    'how.pipeline.p1':    'Una cámara captura a la persona a 30 fotogramas por segundo. MediaPipe procesa cada fotograma en el navegador (demo web) o localmente en Python (instalación), detectando 33 puntos del cuerpo: articulaciones, extremidades y cara. Esta información nunca sale de la máquina como vídeo o imagen, solo se procesan arrays de coordenadas.',
+    'how.pipeline.p2':    'Esas coordenadas llegan al módulo <strong class="vp-bold">vision_processor</strong>, que extrae decenas de descriptores de movimiento en cada fotograma. Cada descriptor se mapea a uno o más parámetros sonoros y se envía en tiempo real a SuperCollider vía OSC o a un sintetizador externo vía MIDI/MPE. El cuerpo se convierte en el instrumento.',
+
+    'how.step1.number': 'Paso 1',
+    'how.step1.title':  'Cámara',
+    'how.step1.desc':   'Una cámara captura a la persona a 30 fotogramas por segundo. No se graba ningún vídeo. Solo se procesan arrays de coordenadas.',
+
+    'how.step2.number': 'Paso 2',
+    'how.step2.title':  'Vision Processor',
+    'how.step2.desc':   'MediaPipe detecta 33 puntos del cuerpo en cada fotograma: articulaciones, extremidades y cara. El esqueleto se rastrea en tiempo real.',
+
+    'how.step3.number': 'Paso 3',
+    'how.step3.title':  'Feature Extraction',
+    'how.step3.desc':   'El módulo vision_processor calcula decenas de descriptores de movimiento en cada fotograma: energía, simetría, fluidez, jerk, posición de pies y más.',
+
+    'how.step4.number': 'Paso 4',
+    'how.step4.title':  'Mapping',
+    'how.step4.desc':   'Cada descriptor se mapea a un parámetro sonoro: la posición de los pies selecciona el acorde, la altura de la mano elige la nota melódica, el ángulo de rodilla regula el volumen, la inclinación de cabeza filtra el timbre.',
+
+    'how.step5.number': 'Paso 5',
+    'how.step5.title':  'MIDI Data',
+    'how.step5.desc':   'Los parámetros mapeados se envían en tiempo real vía OSC a SuperCollider o vía MIDI/MPE a un sintetizador externo. No hay ningún sonido pre-programado.',
 
     'how.descriptors.label': 'Descriptores de movimiento',
     'how.descriptors.title': 'Qué mide el sistema',
