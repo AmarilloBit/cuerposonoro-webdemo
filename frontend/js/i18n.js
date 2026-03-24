@@ -87,7 +87,7 @@ const TRANSLATIONS = {
     /* --- ABOUT PAGE --- */
     'about.hero.overline': 'CuerpoSonoro — An artistic and technological project',
     'about.hero.title':    'Body as creator',
-    'about.hero.tagline':  'The first in a series of projects placing the body at the center of artistic and technological research.',
+    'about.hero.tagline':  'The first in a series of projects investigating how art and technology can help reconnect with your own body.',
 
     'about.project.label': 'The project',
     'about.project.title': 'CuerpoSonoro',
@@ -96,7 +96,7 @@ const TRANSLATIONS = {
     'about.project.p2': 'To exist, to move, and for that movement to become sound.',
     'about.project.p3': 'This project grows out of a need to return to being. To gather the pieces and learn to inhabit a body that for a long time existed only as armor, as a place of pain and damage, as something wrong that had to change at any cost.',
     'about.project.p4': 'CuerpoSonoro is my way back to it. To listen to it. To let its movement (imperfect, real, mine) be the origin of something beautiful, not the consequence of the violences that run through it.',
-    'about.project.p5': 'It is the first in a series of projects that place the body at the center of my artistic and technological research.',
+    'about.project.p5': 'It is the first in a series of projects investigating how art and technology can help reconnect with your own body.',
     'about.project.pullquote': 'The body as creator.',
 
     'about.links.web':    'Project page',
@@ -106,8 +106,8 @@ const TRANSLATIONS = {
     'about.mara.label': 'Who made this',
     'about.mara.name':  'Mara',
     'about.mara.role':  'Software engineer · Artist · Creative technologist',
-    'about.mara.p1':    'I work at the intersection of code and art: programs that listen, tools that create, systems that feel.',
-    'about.mara.p2':    'I\'m passionate about dreaming up and building those ideas that make my heart leap when they first appear, whether in code, music, light, paint, or recycled materials.',
+    'about.mara.p1':    'I\'m a software engineer and artist. I work in the space where art and human experience meet, and I investigate how technology can help and enhance that experience through physical installations, digital artistic pieces and moments of collective creation.',
+    'about.mara.p2':    'Under the maramotto brand I investigate how art and technology can help expand human experience, always keeping the human — the living being — at the centre. CuerpoSonoro is the first of several projects in this investigation. If you want to collaborate or have a project in mind, you can find me at maramotto.com.',
     'about.mara.link':  'maramotto.com →',
 
     /* --- FOOTER --- */
@@ -196,7 +196,7 @@ const TRANSLATIONS = {
     /* --- ABOUT PAGE --- */
     'about.hero.overline': 'CuerpoSonoro — Un proyecto artístico y tecnológico',
     'about.hero.title':    'El cuerpo como creador',
-    'about.hero.tagline':  'El primero de una serie de proyectos que ponen el cuerpo en el centro de la investigación artística y tecnológica.',
+    'about.hero.tagline':  'El primero de una serie de proyectos que investigan cómo el arte y la tecnología pueden facilitar la reconexión con el propio cuerpo.',
 
     'about.project.label': 'El proyecto',
     'about.project.title': 'CuerpoSonoro',
@@ -205,7 +205,7 @@ const TRANSLATIONS = {
     'about.project.p2': 'Ser, moverse, y que ese movimiento se convierta en sonido.',
     'about.project.p3': 'Este proyecto surge de la necesidad de volver a ser. De recoger los pedazos y aprender a habitar un cuerpo que durante mucho tiempo existió solo como coraza, como lugar de dolor y de delito, como algo erróneo que debía cambiar a cualquier precio.',
     'about.project.p4': 'CuerpoSonoro es mi manera de volver a él. De escucharlo. De hacer que su movimiento (imperfecto, real, mío) sea el origen de algo bello, y no la consecuencia de las violencias que lo atraviesan.',
-    'about.project.p5': 'Es el primero de una serie de proyectos que ponen el cuerpo en el centro de mi investigación artística y tecnológica.',
+    'about.project.p5': 'Es el primero de una serie de proyectos que investigan cómo el arte y la tecnología pueden facilitar la reconexión con el propio cuerpo.',
     'about.project.pullquote': 'El cuerpo como creador.',
 
     'about.links.web':    'Página del proyecto',
@@ -215,8 +215,8 @@ const TRANSLATIONS = {
     'about.mara.label': 'Quién hay detrás',
     'about.mara.name':  'Mara',
     'about.mara.role':  'Ingeniera de software · Artista · Tecnóloga creativa',
-    'about.mara.p1':    'Trabajo en el cruce entre el código y el arte: programas que escuchan, herramientas que crean, sistemas que sienten.',
-    'about.mara.p2':    'Me apasiona inventar y llevar a cabo esas ideas que cuando se me ocurren me dan un vuelco el corazón y me llenan de energía, ya sea con código, con música, con luz, con pintura o con materiales reciclados.',
+    'about.mara.p1':    'Soy ingeniera de software y artista. Trabajo en el área donde arte y experiencia humana se encuentran e investigo cómo la tecnología puede ayudar y potenciar esta experiencia a través de instalaciones físicas, piezas artísticas digitales y momentos de creación colectiva.',
+    'about.mara.p2':    'Bajo la marca maramotto investigo cómo el arte y la tecnología pueden ayudar a aumentar la experiencia humana, poniendo siempre al humano, al ser vivo, en el centro. CuerpoSonoro es el primero de varios proyectos de esta investigación. Si quieres colaborar o tienes un proyecto en mente, me puedes encontrar en maramotto.com.',
     'about.mara.link':  'maramotto.com →',
 
     /* --- FOOTER --- */
