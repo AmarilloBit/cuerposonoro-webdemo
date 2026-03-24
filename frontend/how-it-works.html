@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>How it works — CuerpoSonoro</title>
+  <meta name="description" content="CuerpoSonoro — how the system works: computer vision, motion feature extraction and real-time sound synthesis.">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* ============================================
+       HOW IT WORKS — page-specific styles
+       ============================================ */
+
+    /* Pipeline SVG diagram */
+    .pipeline-section {
+      padding: 5rem 0 4rem;
+      background: var(--cream);
+    }
+
+    .pipeline-section__header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .pipeline-svg-wrap {
+      width: 100%;
+      overflow-x: auto;
+      padding-bottom: 1rem;
+    }
+
+    .pipeline-svg-wrap svg {
+      display: block;
+      margin: 0 auto;
+      max-width: 100%;
+    }
+
+    /* Descriptors table section */
+    .descriptors-section {
+      padding: 5rem 0;
+      background: var(--teal);
+    }
+
+    .descriptors-section .section-label {
+      color: var(--yellow);
+      opacity: 0.8;
+    }
+
+    .descriptors-section__title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+      font-weight: 800;
+      color: var(--white);
+      letter-spacing: -0.02em;
+      margin-top: 0.4rem;
+      margin-bottom: 1rem;
+    }
+
+    .descriptors-section__intro {
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: rgba(255, 255, 255, 0.75);
+      max-width: 680px;
+      margin-bottom: 3rem;
+    }
+
+    .descriptors-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .descriptor-card {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 16px;
+      padding: 1.5rem;
+      transition: background 0.2s;
+    }
+
+    .descriptor-card:hover {
+      background: rgba(255, 255, 255, 0.13);
+    }
+
+    .descriptor-card__header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .descriptor-card__icon {
+      font-size: 1.3rem;
+      flex-shrink: 0;
+    }
+
+    .descriptor-card__name {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--yellow);
+    }
+
+    .descriptor-card__body {
+      font-size: 0.9rem;
+      line-height: 1.65;
+      color: rgba(255, 255, 255, 0.75);
+      margin-bottom: 0.75rem;
+    }
+
+    .descriptor-card__mapping {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.55);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 0.75rem;
+    }
+
+    .descriptor-card__arrow {
+      color: var(--yellow);
+      flex-shrink: 0;
+    }
+
+    /* Stack section */
+    .stack-section {
+      padding: 5rem 0;
+      background: var(--cream);
+    }
+
+    .stack-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1rem;
+      margin-top: 2.5rem;
+    }
+
+    .stack-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      padding: 1.25rem 1.5rem;
+      background: var(--white);
+      border-radius: 14px;
+      border: 1px solid rgba(30, 107, 123, 0.1);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .stack-item:hover {
+      border-color: rgba(30, 107, 123, 0.3);
+      box-shadow: 0 4px 16px rgba(30, 107, 123, 0.08);
+    }
+
+    .stack-item__layer {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--teal);
+      opacity: 0.7;
+    }
+
+    .stack-item__tech {
+      font-family: 'Syne', sans-serif;
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--dark);
+    }
+
+    .stack-item__desc {
+      font-size: 0.82rem;
+      color: var(--text-light);
+      line-height: 1.5;
+    }
+
+    /* Demo vs installation section */
+    .compare-section {
+      padding: 5rem 0;
+      background: var(--cream-dark);
+      border-top: 1px solid rgba(30, 107, 123, 0.1);
+    }
+
+    .compare-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-top: 2.5rem;
+    }
+
+    .compare-card {
+      border-radius: 20px;
+      padding: 2rem;
+    }
+
+    .compare-card--demo {
+      background: var(--teal-light);
+      border: 1px solid rgba(30, 107, 123, 0.2);
+    }
+
+    .compare-card--install {
+      background: var(--teal);
+      border: 1px solid var(--teal-dark);
+    }
+
+    .compare-card__label {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      margin-bottom: 0.5rem;
+    }
+
+    .compare-card--demo .compare-card__label { color: var(--teal); }
+    .compare-card--install .compare-card__label { color: var(--yellow); opacity: 0.8; }
+
+    .compare-card__title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 800;
+      margin-bottom: 1.25rem;
+      letter-spacing: -0.01em;
+    }
+
+    .compare-card--demo .compare-card__title { color: var(--dark); }
+    .compare-card--install .compare-card__title { color: var(--white); }
+
+    .compare-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .compare-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      font-size: 0.9rem;
+      line-height: 1.55;
+    }
+
+    .compare-card--demo .compare-list li { color: var(--text); }
+    .compare-card--install .compare-list li { color: rgba(255,255,255,0.82); }
+
+    .compare-list__dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 0.45rem;
+    }
+
+    .compare-card--demo .compare-list__dot { background: var(--teal); }
+    .compare-card--install .compare-list__dot { background: var(--yellow); }
+
+    /* GitHub CTA section */
+    .github-cta {
+      padding: 5rem 0;
+      background: var(--dark);
+      text-align: center;
+    }
+
+    .github-cta__label {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--yellow);
+      opacity: 0.7;
+      margin-bottom: 1rem;
+    }
+
+    .github-cta__heading {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 800;
+      color: var(--white);
+      letter-spacing: -0.02em;
+      margin-bottom: 1rem;
+    }
+
+    .github-cta__text {
+      font-size: 1rem;
+      color: rgba(255,255,255,0.6);
+      line-height: 1.75;
+      max-width: 480px;
+      margin: 0 auto 2.5rem;
+    }
+
+    .github-cta__actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn--github {
+      background: var(--yellow);
+      color: var(--dark);
+      border-color: var(--yellow);
+      font-weight: 800;
+    }
+
+    .btn--github:hover {
+      background: var(--white);
+      border-color: var(--white);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .compare-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .descriptors-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stack-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .pipeline-section,
+      .descriptors-section,
+      .stack-section,
+      .compare-section {
+        padding: 3.5rem 1.5rem;
+      }
+
+      .github-cta {
+        padding: 3.5rem 1.5rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .stack-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .github-cta__actions {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .github-cta__actions .btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============================================
+       NAVIGATION
+       ============================================ -->
+  <nav class="nav" id="nav">
+    <a href="index.html" class="nav__logo">
+      <svg class="nav__logo-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 44 22" fill="none"
+        stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M2,7 Q7,2 12,7 Q17,12 22,7 Q27,2 32,7 Q37,12 42,7"/>
+        <path d="M2,15 Q7,10 12,15 Q17,20 22,15 Q27,10 32,15 Q37,20 42,15" opacity="0.45"/>
+      </svg>
+      CuerpoSonoro
+    </a>
+
+    <ul class="nav__links" id="navLinks">
+      <li><a href="index.html" data-i18n="nav.demo"></a></li>
+      <li><a href="how-it-works.html" class="active" data-i18n="nav.how"></a></li>
+      <li><a href="about.html" data-i18n="nav.about"></a></li>
+      <li>
+        <div class="lang-toggle">
+          <button class="lang-toggle__btn" data-lang="en">EN</button>
+          <button class="lang-toggle__btn active" data-lang="es">ES</button>
+        </div>
+      </li>
+    </ul>
+
+    <button class="nav__toggle" id="navToggle" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+
+  <!-- ============================================
+       HERO
+       ============================================ -->
+  <section class="about-hero">
+    <div class="about-hero__inner">
+      <p class="about-hero__overline" data-i18n="how.hero.overline"></p>
+      <h1 class="about-hero__title" data-i18n="how.hero.title"></h1>
+      <p class="about-hero__tagline" data-i18n="how.hero.tagline"></p>
+    </div>
+  </section>
+
+
+  <!-- ============================================
+       PIPELINE DIAGRAM
+       ============================================ -->
+  <section class="pipeline-section">
+    <div class="container">
+
+      <div class="pipeline-section__header">
+        <p class="section-label" data-i18n="how.pipeline.label"></p>
+        <h2 class="section-title" data-i18n="how.pipeline.title"></h2>
+      </div>
+
+      <div class="pipeline-svg-wrap">
+        <svg viewBox="0 0 900 320" xmlns="http://www.w3.org/2000/svg"
+          width="900" height="320" role="img" aria-label="CuerpoSonoro pipeline diagram">
+
+          <!-- ── background ── -->
+          <rect width="900" height="320" fill="#FDF5E6" rx="0"/>
+
+          <!-- ── connector lines ── -->
+          <!-- camera → vision_processor -->
+          <line x1="148" y1="160" x2="228" y2="160" stroke="#1E6B7B" stroke-width="2.5" stroke-dasharray="6 4"/>
+          <!-- vision_processor → features -->
+          <line x1="388" y1="160" x2="468" y2="160" stroke="#1E6B7B" stroke-width="2.5" stroke-dasharray="6 4"/>
+          <!-- features → mapping -->
+          <line x1="628" y1="160" x2="708" y2="160" stroke="#1E6B7B" stroke-width="2.5" stroke-dasharray="6 4"/>
+          <!-- mapping → output (two arrows: down) -->
+          <line x1="808" y1="200" x2="808" y2="238" stroke="#1E6B7B" stroke-width="2" stroke-dasharray="5 4"/>
+
+          <!-- arrowheads -->
+          <polygon points="228,154 228,166 244,160" fill="#1E6B7B"/>
+          <polygon points="468,154 468,166 484,160" fill="#1E6B7B"/>
+          <polygon points="708,154 708,166 724,160" fill="#1E6B7B"/>
+          <polygon points="802,238 814,238 808,252" fill="#1E6B7B"/>
+
+          <!-- ── STEP 1: CÁMARA ── -->
+          <rect x="12" y="100" width="136" height="120" rx="16" fill="#1E6B7B"/>
+          <!-- camera icon -->
+          <rect x="46" y="118" width="68" height="48" rx="8" fill="none" stroke="#FDF5E6" stroke-width="2.5"/>
+          <circle cx="80" cy="142" r="12" fill="none" stroke="#FDF5E6" stroke-width="2.5"/>
+          <circle cx="80" cy="142" r="5" fill="#FFD93D"/>
+          <rect x="96" y="122" width="14" height="8" rx="3" fill="#FDF5E6" opacity="0.6"/>
+          <!-- label -->
+          <text x="80" y="184" text-anchor="middle" font-family="'Syne', sans-serif" font-weight="800"
+            font-size="11" fill="#FDF5E6" letter-spacing="0.08em">CÁMARA</text>
+          <!-- sublabel -->
+          <text x="80" y="200" text-anchor="middle" font-family="'DM Sans', sans-serif"
+            font-size="9" fill="rgba(253,245,230,0.65)">30 FPS · webcam</text>
+
+          <!-- ── STEP 2: VISION PROCESSOR ── -->
+          <rect x="228" y="80" width="160" height="160" rx="16" fill="#155460"/>
+          <!-- mediapipe body icon (simplified skeleton) -->
+          <!-- head -->
+          <circle cx="308" cy="118" r="12" fill="none" stroke="#FDF5E6" stroke-width="2.2"/>
+          <!-- torso -->
+          <line x1="308" y1="130" x2="308" y2="168" stroke="#FDF5E6" stroke-width="2.2"/>
+          <!-- shoulders -->
+          <line x1="282" y1="140" x2="334" y2="140" stroke="#FDF5E6" stroke-width="2.2"/>
+          <!-- left arm -->
+          <line x1="282" y1="140" x2="272" y2="162" stroke="#FDF5E6" stroke-width="2"/>
+          <!-- right arm -->
+          <line x1="334" y1="140" x2="344" y2="162" stroke="#FDF5E6" stroke-width="2"/>
+          <!-- legs -->
+          <line x1="308" y1="168" x2="292" y2="196" stroke="#FDF5E6" stroke-width="2.2"/>
+          <line x1="308" y1="168" x2="324" y2="196" stroke="#FDF5E6" stroke-width="2.2"/>
+          <!-- landmark dots -->
+          <circle cx="308" cy="118" r="3" fill="#FFD93D"/>
+          <circle cx="282" cy="140" r="3" fill="#FFD93D"/>
+          <circle cx="334" cy="140" r="3" fill="#FFD93D"/>
+          <circle cx="272" cy="162" r="3" fill="#FFD93D"/>
+          <circle cx="344" cy="162" r="3" fill="#FFD93D"/>
+          <circle cx="292" cy="196" r="3" fill="#FFD93D"/>
+          <circle cx="324" cy="196" r="3" fill="#FFD93D"/>
+          <!-- label -->
+          <text x="308" y="218" text-anchor="middle" font-family="'Syne', sans-serif" font-weight="800"
+            font-size="11" fill="#FDF5E6" letter-spacing="0.06em">VISION PROCESSOR</text>
+          <text x="308" y="232" text-anchor="middle" font-family="'DM Sans', sans-serif"
+            font-size="9" fill="rgba(253,245,230,0.65)">MediaPipe · 33 landmarks</text>
+
+          <!-- ── STEP 3: FEATURE EXTRACTION ── -->
+          <rect x="468" y="80" width="160" height="160" rx="16" fill="#1E6B7B"/>
+          <!-- waveform / signal bars icon -->
+          <rect x="496" y="160" width="10" height="26" rx="3" fill="#FFD93D" opacity="0.9"/>
+          <rect x="512" y="142" width="10" height="44" rx="3" fill="#FDF5E6"/>
+          <rect x="528" y="150" width="10" height="36" rx="3" fill="#FFD93D" opacity="0.7"/>
+          <rect x="544" y="134" width="10" height="52" rx="3" fill="#FDF5E6"/>
+          <rect x="560" y="146" width="10" height="40" rx="3" fill="#FFD93D" opacity="0.8"/>
+          <rect x="576" y="158" width="10" height="28" rx="3" fill="#FDF5E6" opacity="0.7"/>
+          <!-- label -->
+          <text x="548" y="218" text-anchor="middle" font-family="'Syne', sans-serif" font-weight="800"
+            font-size="11" fill="#FDF5E6" letter-spacing="0.06em">FEATURE EXTRACTION</text>
+          <text x="548" y="232" text-anchor="middle" font-family="'DM Sans', sans-serif"
+            font-size="9" fill="rgba(253,245,230,0.65)">energía · simetría · jerk · ...</text>
+
+          <!-- ── STEP 4: MAPPING ── -->
+          <rect x="708" y="80" width="160" height="120" rx="16" fill="#155460"/>
+          <!-- mapping icon: two columns linked by arrows -->
+          <text x="734" y="122" font-family="'DM Sans', sans-serif" font-size="9"
+            fill="rgba(253,245,230,0.7)">feetCenterX</text>
+          <text x="734" y="138" font-family="'DM Sans', sans-serif" font-size="9"
+            fill="rgba(253,245,230,0.7)">energy</text>
+          <text x="734" y="154" font-family="'DM Sans', sans-serif" font-size="9"
+            fill="rgba(253,245,230,0.7)">headTilt</text>
+          <text x="734" y="170" font-family="'DM Sans', sans-serif" font-size="9"
+            fill="rgba(253,245,230,0.7)">rightHandY</text>
+          <!-- arrows -->
+          <line x1="802" y1="120" x2="816" y2="120" stroke="#FFD93D" stroke-width="1.5"/>
+          <line x1="802" y1="136" x2="816" y2="136" stroke="#FFD93D" stroke-width="1.5"/>
+          <line x1="802" y1="152" x2="816" y2="152" stroke="#FFD93D" stroke-width="1.5"/>
+          <line x1="802" y1="168" x2="816" y2="168" stroke="#FFD93D" stroke-width="1.5"/>
+          <polygon points="816,116 816,124 823,120" fill="#FFD93D"/>
+          <polygon points="816,132 816,140 823,136" fill="#FFD93D"/>
+          <polygon points="816,148 816,156 823,152" fill="#FFD93D"/>
+          <polygon points="816,164 816,172 823,168" fill="#FFD93D"/>
+          <text x="828" y="122" font-family="'DM Sans', sans-serif" font-size="9"
+            fill="#FFD93D">harmonía</text>
+          <text x="828" y="138" font-family="'DM Sans', sans-serif" font-size="9"
+            fill="#FFD93D">volumen</text>
+          <text x="828" y="154" font-family="'DM Sans', sans-serif" font-size="9"
+            fill="#FFD93D">filtro</text>
+          <text x="828" y="170" font-family="'DM Sans', sans-serif" font-size="9"
+            fill="#FFD93D">melodía</text>
+          <!-- label -->
+          <text x="788" y="218" text-anchor="middle" font-family="'Syne', sans-serif" font-weight="800"
+            font-size="11" fill="#FDF5E6" letter-spacing="0.06em">MAPPING</text>
+
+          <!-- ── OUTPUT PILLS ── -->
+          <!-- SuperCollider pill -->
+          <rect x="708" y="254" width="118" height="34" rx="17" fill="#1E6B7B" opacity="0.18"
+            stroke="#1E6B7B" stroke-width="1.5"/>
+          <text x="767" y="276" text-anchor="middle" font-family="'Syne', sans-serif" font-weight="800"
+            font-size="10" fill="#1E6B7B" letter-spacing="0.05em">SuperCollider</text>
+
+          <!-- MIDI/MPE pill -->
+          <rect x="836" y="254" width="52" height="34" rx="17" fill="#1E6B7B" opacity="0.18"
+            stroke="#1E6B7B" stroke-width="1.5"/>
+          <text x="862" y="276" text-anchor="middle" font-family="'Syne', sans-serif" font-weight="800"
+            font-size="10" fill="#1E6B7B" letter-spacing="0.04em">MIDI</text>
+
+          <!-- step numbers -->
+          <circle cx="32" cy="110" r="11" fill="#FFD93D"/>
+          <text x="32" y="115" text-anchor="middle" font-family="'Syne', sans-serif" font-weight="800"
+            font-size="11" fill="#155460">1</text>
+
+          <circle cx="248" cy="92" r="11" fill="#FFD93D"/>
+          <text x="248" y="97" text-anchor="middle" font-family="'Syne', sans-serif" font-weight="800"
+            font-size="11" fill="#155460">2</text>
+
+          <circle cx="488" cy="92" r="11" fill="#FFD93D"/>
+          <text x="488" y="97" text-anchor="middle" font-family="'Syne', sans-serif" font-weight="800"
+            font-size="11" fill="#155460">3</text>
+
+          <circle cx="728" cy="92" r="11" fill="#FFD93D"/>
+          <text x="728" y="97" text-anchor="middle" font-family="'Syne', sans-serif" font-weight="800"
+            font-size="11" fill="#155460">4</text>
+        </svg>
+      </div>
+
+      <!-- Pipeline narrative below the diagram -->
+      <div class="about-content" style="margin-top: 3rem;">
+        <p data-i18n="how.pipeline.p1"></p>
+        <p data-i18n="how.pipeline.p2"></p>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ============================================
+       MOTION DESCRIPTORS
+       ============================================ -->
+  <section class="descriptors-section">
+    <div class="container">
+      <p class="section-label" data-i18n="how.descriptors.label"></p>
+      <h2 class="descriptors-section__title" data-i18n="how.descriptors.title"></h2>
+      <p class="descriptors-section__intro" data-i18n="how.descriptors.intro"></p>
+
+      <div class="descriptors-grid">
+
+        <div class="descriptor-card">
+          <div class="descriptor-card__header">
+            <span class="descriptor-card__icon">⚡</span>
+            <span class="descriptor-card__name" data-i18n="how.desc.energy.name"></span>
+          </div>
+          <p class="descriptor-card__body" data-i18n="how.desc.energy.body"></p>
+          <div class="descriptor-card__mapping">
+            <span class="descriptor-card__arrow">→</span>
+            <span data-i18n="how.desc.energy.map"></span>
+          </div>
+        </div>
+
+        <div class="descriptor-card">
+          <div class="descriptor-card__header">
+            <span class="descriptor-card__icon">⚖️</span>
+            <span class="descriptor-card__name" data-i18n="how.desc.symmetry.name"></span>
+          </div>
+          <p class="descriptor-card__body" data-i18n="how.desc.symmetry.body"></p>
+          <div class="descriptor-card__mapping">
+            <span class="descriptor-card__arrow">→</span>
+            <span data-i18n="how.desc.symmetry.map"></span>
+          </div>
+        </div>
+
+        <div class="descriptor-card">
+          <div class="descriptor-card__header">
+            <span class="descriptor-card__icon">〰️</span>
+            <span class="descriptor-card__name" data-i18n="how.desc.smoothness.name"></span>
+          </div>
+          <p class="descriptor-card__body" data-i18n="how.desc.smoothness.body"></p>
+          <div class="descriptor-card__mapping">
+            <span class="descriptor-card__arrow">→</span>
+            <span data-i18n="how.desc.smoothness.map"></span>
+          </div>
+        </div>
+
+        <div class="descriptor-card">
+          <div class="descriptor-card__header">
+            <span class="descriptor-card__icon">👣</span>
+            <span class="descriptor-card__name" data-i18n="how.desc.feet.name"></span>
+          </div>
+          <p class="descriptor-card__body" data-i18n="how.desc.feet.body"></p>
+          <div class="descriptor-card__mapping">
+            <span class="descriptor-card__arrow">→</span>
+            <span data-i18n="how.desc.feet.map"></span>
+          </div>
+        </div>
+
+        <div class="descriptor-card">
+          <div class="descriptor-card__header">
+            <span class="descriptor-card__icon">🦵</span>
+            <span class="descriptor-card__name" data-i18n="how.desc.knee.name"></span>
+          </div>
+          <p class="descriptor-card__body" data-i18n="how.desc.knee.body"></p>
+          <div class="descriptor-card__mapping">
+            <span class="descriptor-card__arrow">→</span>
+            <span data-i18n="how.desc.knee.map"></span>
+          </div>
+        </div>
+
+        <div class="descriptor-card">
+          <div class="descriptor-card__header">
+            <span class="descriptor-card__icon">🙆</span>
+            <span class="descriptor-card__name" data-i18n="how.desc.hands.name"></span>
+          </div>
+          <p class="descriptor-card__body" data-i18n="how.desc.hands.body"></p>
+          <div class="descriptor-card__mapping">
+            <span class="descriptor-card__arrow">→</span>
+            <span data-i18n="how.desc.hands.map"></span>
+          </div>
+        </div>
+
+        <div class="descriptor-card">
+          <div class="descriptor-card__header">
+            <span class="descriptor-card__icon">💥</span>
+            <span class="descriptor-card__name" data-i18n="how.desc.jerk.name"></span>
+          </div>
+          <p class="descriptor-card__body" data-i18n="how.desc.jerk.body"></p>
+          <div class="descriptor-card__mapping">
+            <span class="descriptor-card__arrow">→</span>
+            <span data-i18n="how.desc.jerk.map"></span>
+          </div>
+        </div>
+
+        <div class="descriptor-card">
+          <div class="descriptor-card__header">
+            <span class="descriptor-card__icon">📐</span>
+            <span class="descriptor-card__name" data-i18n="how.desc.elbow.name"></span>
+          </div>
+          <p class="descriptor-card__body" data-i18n="how.desc.elbow.body"></p>
+          <div class="descriptor-card__mapping">
+            <span class="descriptor-card__arrow">→</span>
+            <span data-i18n="how.desc.elbow.map"></span>
+          </div>
+        </div>
+
+        <div class="descriptor-card">
+          <div class="descriptor-card__header">
+            <span class="descriptor-card__icon">🗣️</span>
+            <span class="descriptor-card__name" data-i18n="how.desc.head.name"></span>
+          </div>
+          <p class="descriptor-card__body" data-i18n="how.desc.head.body"></p>
+          <div class="descriptor-card__mapping">
+            <span class="descriptor-card__arrow">→</span>
+            <span data-i18n="how.desc.head.map"></span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================
+       TECH STACK
+       ============================================ -->
+  <section class="stack-section">
+    <div class="container">
+      <p class="section-label" data-i18n="how.stack.label"></p>
+      <h2 class="section-title" data-i18n="how.stack.title"></h2>
+
+      <div class="stack-grid">
+
+        <div class="stack-item">
+          <span class="stack-item__layer" data-i18n="how.stack.layer.vision"></span>
+          <span class="stack-item__tech">MediaPipe Pose</span>
+          <span class="stack-item__desc" data-i18n="how.stack.mediapipe"></span>
+        </div>
+
+        <div class="stack-item">
+          <span class="stack-item__layer" data-i18n="how.stack.layer.vision"></span>
+          <span class="stack-item__tech">OpenCV</span>
+          <span class="stack-item__desc" data-i18n="how.stack.opencv"></span>
+        </div>
+
+        <div class="stack-item">
+          <span class="stack-item__layer" data-i18n="how.stack.layer.audio"></span>
+          <span class="stack-item__tech">SuperCollider</span>
+          <span class="stack-item__desc" data-i18n="how.stack.supercollider"></span>
+        </div>
+
+        <div class="stack-item">
+          <span class="stack-item__layer" data-i18n="how.stack.layer.audio"></span>
+          <span class="stack-item__tech">MIDI / MPE</span>
+          <span class="stack-item__desc" data-i18n="how.stack.midi"></span>
+        </div>
+
+        <div class="stack-item">
+          <span class="stack-item__layer" data-i18n="how.stack.layer.core"></span>
+          <span class="stack-item__tech">Python 3.11</span>
+          <span class="stack-item__desc" data-i18n="how.stack.python"></span>
+        </div>
+
+        <div class="stack-item">
+          <span class="stack-item__layer" data-i18n="how.stack.layer.infra"></span>
+          <span class="stack-item__tech">Docker</span>
+          <span class="stack-item__desc" data-i18n="how.stack.docker"></span>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================
+       DEMO vs INSTALLATION
+       ============================================ -->
+  <section class="compare-section">
+    <div class="container">
+      <p class="section-label" data-i18n="how.compare.label"></p>
+      <h2 class="section-title" data-i18n="how.compare.title"></h2>
+
+      <div class="compare-grid">
+
+        <div class="compare-card compare-card--demo">
+          <p class="compare-card__label" data-i18n="how.compare.demo.label"></p>
+          <p class="compare-card__title" data-i18n="how.compare.demo.title"></p>
+          <ul class="compare-list">
+            <li><span class="compare-list__dot"></span><span data-i18n="how.compare.demo.1"></span></li>
+            <li><span class="compare-list__dot"></span><span data-i18n="how.compare.demo.2"></span></li>
+            <li><span class="compare-list__dot"></span><span data-i18n="how.compare.demo.3"></span></li>
+            <li><span class="compare-list__dot"></span><span data-i18n="how.compare.demo.4"></span></li>
+          </ul>
+        </div>
+
+        <div class="compare-card compare-card--install">
+          <p class="compare-card__label" data-i18n="how.compare.install.label"></p>
+          <p class="compare-card__title" data-i18n="how.compare.install.title"></p>
+          <ul class="compare-list">
+            <li><span class="compare-list__dot"></span><span data-i18n="how.compare.install.1"></span></li>
+            <li><span class="compare-list__dot"></span><span data-i18n="how.compare.install.2"></span></li>
+            <li><span class="compare-list__dot"></span><span data-i18n="how.compare.install.3"></span></li>
+            <li><span class="compare-list__dot"></span><span data-i18n="how.compare.install.4"></span></li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================
+       GITHUB CTA
+       ============================================ -->
+  <section class="github-cta">
+    <div class="container">
+      <p class="github-cta__label" data-i18n="how.github.label"></p>
+      <h2 class="github-cta__heading" data-i18n="how.github.heading"></h2>
+      <p class="github-cta__text" data-i18n="how.github.text"></p>
+      <div class="github-cta__actions">
+        <a href="https://github.com/maramotto/cuerposonoro" target="_blank" rel="noopener"
+          class="btn btn--github" data-i18n="how.github.btn.repo"></a>
+        <a href="index.html" class="btn btn--outline-white" data-i18n="how.github.btn.demo"></a>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================
+       FOOTER
+       ============================================ -->
+  <footer class="footer">
+    <p class="footer__text">
+      &copy; 2026 <a href="https://maramotto.com" target="_blank" rel="noopener">maramotto.com</a> &mdash; Made with art and code
+    </p>
+  </footer>
+
+
+  <!-- SCRIPTS -->
+  <script src="js/i18n.js"></script>
+
+  <script>
+    document.getElementById('navToggle').addEventListener('click', () => {
+      document.getElementById('navLinks').classList.toggle('open');
+    });
+  </script>
+
+</body>
+</html>

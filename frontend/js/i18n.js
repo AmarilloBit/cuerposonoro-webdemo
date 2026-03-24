@@ -9,6 +9,7 @@ const TRANSLATIONS = {
   en: {
     /* --- NAV --- */
     'nav.demo':    'Demo',
+    'nav.how':     'How it works',
     'nav.about':   'About',
 
     /* --- INDEX: HERO --- */
@@ -113,11 +114,96 @@ const TRANSLATIONS = {
     /* --- FOOTER --- */
     'footer.text': 'CuerpoSonoro — a project by',
     'footer.tfg':  'TFG · Software Engineering · URJC 2025/2026',
+
+    /* --- HOW IT WORKS PAGE --- */
+    'how.hero.overline': 'CuerpoSonoro — Technical documentation',
+    'how.hero.title':    'How the system works',
+    'how.hero.tagline':  'Computer vision, motion feature extraction and real-time sound synthesis. No pre-programmed sound. The camera records nothing.',
+
+    'how.pipeline.label': 'The pipeline',
+    'how.pipeline.title': 'From movement to sound',
+    'how.pipeline.p1':    'A camera captures the performer at 30 frames per second. MediaPipe processes each frame in the browser (web demo) or locally in Python (installation), detecting 33 body landmarks — key points on joints, extremities and face. This data never leaves the machine as video or images: only coordinate arrays are processed.',
+    'how.pipeline.p2':    'Those coordinates reach the vision_processor module, which extracts dozens of motion descriptors from each frame. Each descriptor maps to one or more sound parameters and is sent in real time to SuperCollider via OSC or to an external synthesizer via MIDI/MPE. The body becomes the instrument.',
+
+    'how.descriptors.label': 'Motion descriptors',
+    'how.descriptors.title': 'What the system measures',
+    'how.descriptors.intro': 'The vision_processor module extracts dozens of descriptors from each frame. Each one captures a different dimension of movement and maps to a specific musical parameter. Here are the main ones.',
+
+    'how.desc.energy.name':     'Energy',
+    'how.desc.energy.body':     'Overall motion intensity: velocity of key joints (wrists, ankles, nose) between frames. High energy means the body is moving fast and with amplitude.',
+    'how.desc.energy.map':      'Volume and filter resonance',
+
+    'how.desc.symmetry.name':   'Symmetry',
+    'how.desc.symmetry.body':   'Left–right balance of the body. Calculated from the horizontal deviation of both wrists relative to the centre of the frame.',
+    'how.desc.symmetry.map':    'Stereo panning',
+
+    'how.desc.smoothness.name': 'Smoothness',
+    'how.desc.smoothness.body': 'Fluidity vs. abruptness of movement. Measures how abruptly acceleration changes (jerk). Slow, sustained gestures score high; sudden ones score low.',
+    'how.desc.smoothness.map':  'Filter cutoff frequency',
+
+    'how.desc.feet.name':       'Foot position',
+    'how.desc.feet.body':       'Horizontal centre of both ankles in the frame space. Divides the capture zone into four harmonic regions.',
+    'how.desc.feet.map':        'Chord selection (I, IV, V, VI)',
+
+    'how.desc.knee.name':       'Knee angle',
+    'how.desc.knee.body':       'Average knee flexion angle. Straight legs = maximum. Bent knees = lower value. Allows natural crescendos and decrescendos through the body.',
+    'how.desc.knee.map':        'Chord velocity (loudness)',
+
+    'how.desc.hands.name':      'Hand height',
+    'how.desc.hands.body':      'Vertical position of each hand relative to body height. Right hand controls the lower octave, left hand the higher octave.',
+    'how.desc.hands.map':       'Melodic note selection',
+
+    'how.desc.jerk.name':       'Hand jerk',
+    'how.desc.jerk.body':       'Detects sudden wrist movements. High jerk in a single frame is the trigger condition: it fires a note on event.',
+    'how.desc.jerk.map':        'Note trigger',
+
+    'how.desc.elbow.name':      'Elbow–hip angle',
+    'how.desc.elbow.body':      'Angle between arm and torso for each side. Arm close to the body = stable pitch. Extended arm = glissando. Oscillating movement = vibrato.',
+    'how.desc.elbow.map':       'Pitch bend / vibrato',
+
+    'how.desc.head.name':       'Head tilt',
+    'how.desc.head.body':       'Lateral tilt of the head, measured from the height difference between both ears. Controls a global filter affecting all sound.',
+    'how.desc.head.map':        'Global tonal filter (CC74)',
+
+    'how.stack.label':          'Tech stack',
+    'how.stack.title':          'Built with',
+    'how.stack.layer.vision':   'Computer vision',
+    'how.stack.layer.audio':    'Audio synthesis',
+    'how.stack.layer.core':     'Core',
+    'how.stack.layer.infra':    'Infrastructure',
+    'how.stack.mediapipe':      '33-landmark body pose detection. Runs on CPU, Metal (Apple Silicon) or GPU (Jetson).',
+    'how.stack.opencv':         'Camera capture and frame processing. Low-latency buffer, 30 FPS.',
+    'how.stack.supercollider':  'Algorithmic sound synthesis via OSC. Real-time SynthDefs controlled by motion features.',
+    'how.stack.midi':           'MIDI Polyphonic Expression output for external synthesizers (Surge XT). Two modes: classic and musical.',
+    'how.stack.python':         'Core application logic. Feature extraction, OSC/MIDI communication, pipeline orchestration.',
+    'how.stack.docker':         'Portable, reproducible deployment. Two-service architecture to minimise inter-process latency.',
+
+    'how.compare.label':          'Two versions',
+    'how.compare.title':          'Web demo vs. installation',
+    'how.compare.demo.label':     'Web demo',
+    'how.compare.demo.title':     'cuerposonoro.art',
+    'how.compare.demo.1':         'MediaPipe running directly in the browser (JS)',
+    'how.compare.demo.2':         'Audio synthesis via Web Audio API',
+    'how.compare.demo.3':         '5 core motion descriptors',
+    'how.compare.demo.4':         'Accessible from any device with a webcam',
+    'how.compare.install.label':  'Installation',
+    'how.compare.install.title':  'The real system',
+    'how.compare.install.1':      'MediaPipe in Python — CPU, Metal or TensorRT (Jetson GPU)',
+    'how.compare.install.2':      'SuperCollider synthesis or MIDI/MPE to external synth',
+    'how.compare.install.3':      'Dozens of motion descriptors, 12 MPE features',
+    'how.compare.install.4':      'Designed for live performance and physical installation',
+
+    'how.github.label':     'Open source',
+    'how.github.heading':   'Read the code',
+    'how.github.text':      'The full source code — vision_processor, feature extraction, MIDI/MPE pipeline, SuperCollider synths, benchmarks — is open and documented on GitHub.',
+    'how.github.btn.repo':  'github.com/maramotto/cuerposonoro →',
+    'how.github.btn.demo':  'Try the demo',
   },
 
   es: {
     /* --- NAV --- */
     'nav.demo':    'Demo',
+    'nav.how':     'Cómo funciona',
     'nav.about':   'Sobre el proyecto',
 
     /* --- INDEX: HERO --- */
@@ -222,6 +308,90 @@ const TRANSLATIONS = {
     /* --- FOOTER --- */
     'footer.text': 'CuerpoSonoro - un proyecto de',
     'footer.tfg':  'TFG · Ingeniería del Software · URJC 2025/2026',
+
+    /* --- HOW IT WORKS PAGE --- */
+    'how.hero.overline': 'CuerpoSonoro — Documentación técnica',
+    'how.hero.title':    'Cómo funciona el sistema',
+    'how.hero.tagline':  'Visión por computador, extracción de descriptores de movimiento y síntesis sonora en tiempo real. Sin sonido pre-programado. La cámara no graba nada.',
+
+    'how.pipeline.label': 'El pipeline',
+    'how.pipeline.title': 'Del movimiento al sonido',
+    'how.pipeline.p1':    'Una cámara captura a la persona a 30 fotogramas por segundo. MediaPipe procesa cada fotograma en el navegador (demo web) o localmente en Python (instalación), detectando 33 puntos del cuerpo: articulaciones, extremidades y cara. Esta información nunca sale de la máquina como vídeo o imagen: solo se procesan arrays de coordenadas.',
+    'how.pipeline.p2':    'Esas coordenadas llegan al módulo vision_processor, que extrae decenas de descriptores de movimiento en cada fotograma. Cada descriptor se mapea a uno o más parámetros sonoros y se envía en tiempo real a SuperCollider vía OSC o a un sintetizador externo vía MIDI/MPE. El cuerpo se convierte en el instrumento.',
+
+    'how.descriptors.label': 'Descriptores de movimiento',
+    'how.descriptors.title': 'Qué mide el sistema',
+    'how.descriptors.intro': 'El módulo vision_processor extrae decenas de descriptores en cada fotograma. Cada uno captura una dimensión diferente del movimiento y se mapea a un parámetro musical concreto. Aquí están los principales.',
+
+    'how.desc.energy.name':     'Energía',
+    'how.desc.energy.body':     'Intensidad global del movimiento: velocidad de las articulaciones clave (muñecas, tobillos, nariz) entre fotogramas. Alta energía significa que el cuerpo se mueve rápido y con amplitud.',
+    'how.desc.energy.map':      'Volumen y resonancia del filtro',
+
+    'how.desc.symmetry.name':   'Simetría',
+    'how.desc.symmetry.body':   'Equilibrio izquierda–derecha del cuerpo. Se calcula a partir de la desviación horizontal de ambas muñecas respecto al centro del fotograma.',
+    'how.desc.symmetry.map':    'Paneo estéreo',
+
+    'how.desc.smoothness.name': 'Fluidez',
+    'how.desc.smoothness.body': 'Fluidez frente a brusquedad del movimiento. Mide cómo cambia abruptamente la aceleración (jerk). Los gestos lentos y sostenidos puntúan alto; los repentinos, bajo.',
+    'how.desc.smoothness.map':  'Frecuencia de corte del filtro',
+
+    'how.desc.feet.name':       'Posición de los pies',
+    'how.desc.feet.body':       'Centro horizontal de ambos tobillos en el espacio de captura. Divide la zona en cuatro regiones armónicas.',
+    'how.desc.feet.map':        'Selección de acorde (I, IV, V, VI)',
+
+    'how.desc.knee.name':       'Ángulo de rodillas',
+    'how.desc.knee.body':       'Ángulo medio de flexión de rodillas. Piernas rectas = máximo. Rodillas flexionadas = valor bajo. Permite crescendos y decrescendos naturales con el cuerpo.',
+    'how.desc.knee.map':        'Velocidad del acorde (intensidad)',
+
+    'how.desc.hands.name':      'Altura de las manos',
+    'how.desc.hands.body':      'Posición vertical de cada mano relativa a la altura del cuerpo. La mano derecha controla la octava grave, la izquierda la octava aguda.',
+    'how.desc.hands.map':       'Selección de nota melódica',
+
+    'how.desc.jerk.name':       'Jerk de manos',
+    'how.desc.jerk.body':       'Detecta movimientos bruscos de muñeca. Un jerk alto en un único fotograma es la condición de disparo: activa un evento note on.',
+    'how.desc.jerk.map':        'Disparo de nota',
+
+    'how.desc.elbow.name':      'Ángulo codo–cadera',
+    'how.desc.elbow.body':      'Ángulo entre el brazo y el torso para cada lado. Brazo junto al cuerpo = tono estable. Brazo extendido = glissando. Movimiento oscilante = vibrato.',
+    'how.desc.elbow.map':       'Pitch bend / vibrato',
+
+    'how.desc.head.name':       'Inclinación de cabeza',
+    'how.desc.head.body':       'Inclinación lateral de la cabeza, medida por la diferencia de altura entre ambas orejas. Controla un filtro global que afecta a todo el sonido.',
+    'how.desc.head.map':        'Filtro tonal global (CC74)',
+
+    'how.stack.label':          'Stack técnico',
+    'how.stack.title':          'Construido con',
+    'how.stack.layer.vision':   'Visión por computador',
+    'how.stack.layer.audio':    'Síntesis de audio',
+    'how.stack.layer.core':     'Núcleo',
+    'how.stack.layer.infra':    'Infraestructura',
+    'how.stack.mediapipe':      'Detección de pose corporal con 33 puntos. Funciona en CPU, Metal (Apple Silicon) o GPU (Jetson).',
+    'how.stack.opencv':         'Captura de cámara y procesado de fotogramas. Buffer de baja latencia, 30 FPS.',
+    'how.stack.supercollider':  'Síntesis sonora algorítmica vía OSC. SynthDefs en tiempo real controlados por los descriptores de movimiento.',
+    'how.stack.midi':           'Salida MIDI Polyphonic Expression para sintetizadores externos (Surge XT). Dos modos: clásico y musical.',
+    'how.stack.python':         'Lógica central de la aplicación. Extracción de features, comunicación OSC/MIDI, orquestación del pipeline.',
+    'how.stack.docker':         'Despliegue portable y reproducible. Arquitectura de dos servicios para minimizar latencia entre procesos.',
+
+    'how.compare.label':          'Dos versiones',
+    'how.compare.title':          'Demo web vs. instalación',
+    'how.compare.demo.label':     'Demo web',
+    'how.compare.demo.title':     'cuerposonoro.art',
+    'how.compare.demo.1':         'MediaPipe corriendo directamente en el navegador (JS)',
+    'how.compare.demo.2':         'Síntesis de audio vía Web Audio API',
+    'how.compare.demo.3':         '5 descriptores de movimiento principales',
+    'how.compare.demo.4':         'Accesible desde cualquier dispositivo con cámara',
+    'how.compare.install.label':  'Instalación',
+    'how.compare.install.title':  'El sistema real',
+    'how.compare.install.1':      'MediaPipe en Python — CPU, Metal o TensorRT (GPU Jetson)',
+    'how.compare.install.2':      'Síntesis en SuperCollider o MIDI/MPE a sintetizador externo',
+    'how.compare.install.3':      'Decenas de descriptores de movimiento, 12 features MPE',
+    'how.compare.install.4':      'Diseñado para actuación en vivo e instalación física',
+
+    'how.github.label':     'Código abierto',
+    'how.github.heading':   'Lee el código',
+    'how.github.text':      'El código fuente completo — vision_processor, extracción de features, pipeline MIDI/MPE, synths de SuperCollider, benchmarks — está abierto y documentado en GitHub.',
+    'how.github.btn.repo':  'github.com/maramotto/cuerposonoro →',
+    'how.github.btn.demo':  'Probar la demo',
   }
 };
 
